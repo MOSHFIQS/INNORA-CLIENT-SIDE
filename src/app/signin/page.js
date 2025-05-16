@@ -2,13 +2,25 @@ import Link from 'next/link';
 import React from 'react';
 
 const Page = () => {
+    
+
+
+
+
+    const handleSignIn = e => {
+        e.preventDefault()
+    }
+
+
+
+
     return (
         // sign in
         <div>
             <div className="flex flex-col items-center justify-center h-screen ">
                 <div className="w-full max-w-md rounded-lg shadow p-6 border border-gray-300">
                     <h2 className="text-2xl font-bold mb-4 text-center">SignIn to INNORA</h2>
-                    <form className="flex flex-col gap-2">
+                    <form onSubmit={handleSignIn} className="flex flex-col gap-2">
                         <input
                             placeholder="Email address"
                             className="input input-bordered w-full"

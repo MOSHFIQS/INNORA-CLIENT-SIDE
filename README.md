@@ -34,3 +34,81 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { createContext, useEffect, useState } from 'react'
+import auth from './../firebase/firebase.config';
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+
+export const AuthContext = createContext(null)
+
+const AuthProvider = ({ children }) => {
+
+  const [user, setUser] = useState(null)
+  console.log(user)
+  const [loading, setLoading] = useState(true)
+
+  const signInUser = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password)
+  }
+  const signUpUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password)
+  }
+  const googleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    return signInWithPopup(auth, provider)
+  }
+  const githubLogin = () => {
+    const provider = new GithubAuthProvider();
+    return signInWithPopup(auth, provider)
+  }
+
+  const updateProfileInfo = (name, photo) => {
+    return updateProfile(auth.currentUser, { displayName: name, photoURL: photo })
+  }
+
+  const logOutUser = () => {
+    return signOut(auth)
+  }
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false)
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, []);
+
+  const userAuth = {
+    user, setUser, signInUser, signUpUser, googleLogin, githubLogin, updateProfileInfo, logOutUser,loading,setLoading
+  }
+
+
+
+  return (
+    <AuthContext.Provider value={userAuth}>{children}</AuthContext.Provider>
+  )
+}
+
+export default AuthProvider

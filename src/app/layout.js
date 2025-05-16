@@ -1,6 +1,8 @@
-import "./globals.css";
-import Navbar from "@/components/Navbar";
 
+import "./globals.css";
+import Navbar from "@/components/Navbar"
+import AuthProvider from "@/provider/AuthProvider";
+import { Toaster } from 'react-hot-toast';
 
 
 export const metadata = {
@@ -14,8 +16,14 @@ export default function RootLayout({ children }) {
       <body 
         className={`max-w-[90vw] mx-auto`}
       >
-        <Navbar />
-        {children}
+        <AuthProvider>
+          <Toaster
+            position="bottom-right"
+            reverseOrder={false}
+          />
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
