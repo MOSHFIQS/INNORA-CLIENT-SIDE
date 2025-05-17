@@ -6,9 +6,8 @@ import React, { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const signup = () => {
-    const { setUser, signUpUser, updateProfileInfo } = useContext(AuthContext)
+    const { signUpUser, updateProfileInfo } = useContext(AuthContext)
     const [passwordError, setPasswordError] = useState('')
-    // const [firebaseError, setFirebaseError] = useState('')
     const router = useRouter()
 
 
@@ -33,7 +32,6 @@ const signup = () => {
 
         signUpUser(email,password)
         .then(result => {
-            // setFirebaseError('');
             console.log(result.user)
             setPasswordError('');
             updateProfileInfo(name,imageUrl)
