@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import React from 'react'
+import LogoutButton from './LogoutButton'
 
 const Navbar = () => {
+  
   return (
     <div className="navbar ">
       <div className="navbar-start">
@@ -32,6 +33,7 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         <Link href={'/signin'} className="btn">SignIn</Link>
+        <LogoutButton />
       </div>
     </div>
   )

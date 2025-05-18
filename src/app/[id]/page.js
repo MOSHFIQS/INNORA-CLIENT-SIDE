@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import notFound from "../not-found";
 import {
     BedDouble,
@@ -22,6 +22,8 @@ import {
     XCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { AuthContext } from "@/provider/AuthProvider";
+import toast from "react-hot-toast";
 
 const iconMap = {
     "WiFi": Wifi,
@@ -42,6 +44,8 @@ const FeatureBadge = ({ icon: Icon, text }) => (
 );
 
 const Page = () => {
+    const { user } = useContext(AuthContext)
+    console.log(user)
     const { id } = useParams();
     const [room, setRoom] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -60,6 +64,49 @@ const Page = () => {
         return <div className="p-10 text-center text-gray-500">Loading...</div>;
     if (!room || id !== room._id) return notFound();
 
+
+
+    // handle the reviews post
+    const handleReview = async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const user_email = user?.email;
+        const user_name = user?.displayName || "Anonymous";
+        const comment = form.comment.value;
+        const rating = parseInt(form.rating.value);
+
+        if (!user_email) {
+            toast.error('YOU MUST BE SIGN IN')
+            return;
+        }
+
+        try {
+            const res = await axios.patch(`http://localhost:5000/rooms/${id}/reviews`, {
+                user_email,
+                user_name,
+                comment,
+                rating,
+            })
+                .then(res => {
+                    form.reset();
+                    toast.success(`Your feedback has been recorded successfully. We value your opinion and strive to continuously enhance our service.`)
+                    console.log(res)
+                })
+        } catch (error) {
+            if (error.response?.data?.message) {
+                toast.error(`${error.response.data.message}`);
+            } else {
+                toast.error("Failed to submit review. Please try again later.");
+            }
+            console.error(error);
+        }
+    }
+
+
+
+
+
+
     return (
         <div className=" bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 uppercase">
             {/* Hero Section */}
@@ -67,7 +114,7 @@ const Page = () => {
                 <img
                     src={room.images?.main}
                     alt={room.title}
-                     className="object-cover w-full h-full scale-101 transition-transform duration-1000 ease-in-out"
+                    className="object-cover w-full h-full scale-101 transition-transform duration-1000 ease-in-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute top-6 left-6 bg-white/80 text-gray-800 px-4 py-1 rounded-full text-sm font-semibold">
@@ -127,6 +174,7 @@ const Page = () => {
                         </div>
                     </div>
 
+
                     {/* Safety Features */}
                     <div>
                         <h3 className="text-xl font-semibold mb-4">Safety Features</h3>
@@ -139,6 +187,51 @@ const Page = () => {
                             })}
                         </div>
                     </div>
+                    {/* // Add this inside your JSX (e.g., below the Room Features section) */}
+                    {/* Leave a Review */}
+                    <div>
+                        <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
+                        <form
+                            onSubmit={handleReview}
+                            className="space-y-4"
+                        >
+                            <input
+                                name="user_name"
+                                defaultValue={user?.displayName || ""}
+                                disabled={true}
+                                className="w-full p-2 rounded border"
+                                placeholder="Your name"
+                                required
+                            />
+                            <textarea
+                                name="comment"
+                                placeholder="Your comment"
+                                className="w-full p-2 rounded border"
+                                required
+                            />
+                            <select
+                                name="rating"
+                                className="w-full p-2 rounded border bg-black"
+                                required
+                                defaultValue=""
+                            >
+                                <option value="" disabled>Rating</option>
+                                <option value="5">5 - Excellent</option>
+                                <option value="4">4 - Good</option>
+                                <option value="3">3 - Average</option>
+                                <option value="2">2 - Poor</option>
+                                <option value="1">1 - Terrible</option>
+                            </select>
+                            <button
+                                type="submit"
+                                className="bg-blue-600 text-white px-4 py-2 rounded"
+                            >
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+
+
                 </motion.div>
 
                 {/* Booking Sidebar */}
