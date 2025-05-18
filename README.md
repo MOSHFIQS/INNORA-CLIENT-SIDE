@@ -38,77 +38,305 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { createContext, useEffect, useState } from 'react'
-import auth from './../firebase/firebase.config';
-import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
-
-export const AuthContext = createContext(null)
-
-const AuthProvider = ({ children }) => {
-
-  const [user, setUser] = useState(null)
-  console.log(user)
-  const [loading, setLoading] = useState(true)
-
-  const signInUser = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
+[
+  {
+    "id": 1,
+    "roomId": "R301",
+    "roomNumber": "301",
+    "title": "Deluxe Ocean View",
+    "type": "Deluxe",
+    "bedType": "King",
+    "floor": 3,
+    "roomSizeSqFt": 350,
+    "pricePerNight": 150,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": true,
+    "view": "Ocean",
+    "features": ["WiFi", "TV", "Mini Bar", "Jacuzzi", "Room Service"],
+    "safetyFeatures": ["Smoke Detector", "Fire Extinguisher"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/2029698/pexels-photo-2029698.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Enjoy a breathtaking ocean view from your private balcony in our Deluxe room, complete with luxury amenities...",
+    "shortDescription": "Ocean-view deluxe room with king bed and balcony.",
+    "reviews": []
+  },
+  {
+    "id": 2,
+    "roomId": "R302",
+    "roomNumber": "302",
+    "title": "Executive Suite",
+    "type": "Suite",
+    "bedType": "Queen",
+    "floor": 3,
+    "roomSizeSqFt": 450,
+    "pricePerNight": 200,
+    "currency": "USD",
+    "maxGuests": 3,
+    "isAvailable": true,
+    "isSmokingAllowed": true,
+    "hasBalcony": true,
+    "view": "City",
+    "features": ["WiFi", "TV", "Coffee Maker", "Kitchenette", "Living Area"],
+    "safetyFeatures": ["Smoke Detector", "Safe Box"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/3688261/pexels-photo-3688261.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Spacious suite with a stunning city view, kitchenette, and separate living area ideal for business travelers...",
+    "shortDescription": "Executive suite with city view and kitchenette.",
+    "reviews": []
+  },
+  {
+    "id": 3,
+    "roomId": "R201",
+    "roomNumber": "201",
+    "title": "Standard Twin Room",
+    "type": "Standard",
+    "bedType": "Twin",
+    "floor": 2,
+    "roomSizeSqFt": 250,
+    "pricePerNight": 90,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": false,
+    "isSmokingAllowed": false,
+    "hasBalcony": false,
+    "view": "Garden",
+    "features": ["WiFi", "TV", "Air Conditioning"],
+    "safetyFeatures": ["Smoke Detector"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/3201762/pexels-photo-3201762.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Perfect for friends or colleagues traveling together, our Standard Twin Room offers comfort and convenience...",
+    "shortDescription": "Twin-bed room with garden view, ideal for two guests.",
+    "reviews": []
+  },
+  {
+    "id": 4,
+    "roomId": "R202",
+    "roomNumber": "202",
+    "title": "Family Room",
+    "type": "Family",
+    "bedType": "Double + Twin",
+    "floor": 2,
+    "roomSizeSqFt": 400,
+    "pricePerNight": 180,
+    "currency": "USD",
+    "maxGuests": 4,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": false,
+    "view": "Park",
+    "features": ["WiFi", "TV", "Mini Fridge", "Extra Beds", "Board Games"],
+    "safetyFeatures": ["Smoke Detector", "Child Locks"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Spacious and designed for families, this room includes extra bedding, games for kids, and a peaceful park view...",
+    "shortDescription": "Spacious family room with park view and extra beds.",
+    "reviews": []
+  },
+  {
+    "id": 5,
+    "roomId": "R101",
+    "roomNumber": "101",
+    "title": "Accessible Room",
+    "type": "Accessible",
+    "bedType": "Queen",
+    "floor": 1,
+    "roomSizeSqFt": 300,
+    "pricePerNight": 2000,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": false,
+    "view": "Street",
+    "features": ["WiFi", "TV", "Wheelchair Access", "Roll-in Shower", "Visual Alarm"],
+    "safetyFeatures": ["Smoke Detector", "Grab Bars"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/1571459/pexels-photo-1571459.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Designed for guests with accessibility needs, this room provides comfort, safety, and independence...",
+    "shortDescription": "Accessible room with mobility features and comfort.",
+    "reviews": []
+  },
+  {
+    "id": 6,
+    "roomId": "R102",
+    "roomNumber": "102",
+    "title": "Business Class Room",
+    "type": "Business",
+    "bedType": "King",
+    "floor": 1,
+    "roomSizeSqFt": 330,
+    "pricePerNight": 120,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": false,
+    "isSmokingAllowed": false,
+    "hasBalcony": true,
+    "view": "Courtyard",
+    "features": ["WiFi", "Work Desk", "Printer", "Smart TV", "Coffee Maker"],
+    "safetyFeatures": ["Smoke Detector", "Safe Box"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/3659681/pexels-photo-3659681.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Ideal for corporate travelers, this room offers dedicated workspace and business tools in a serene setting...",
+    "shortDescription": "King-bed room with workspace and courtyard view.",
+    "reviews": []
+  },
+  {
+    "id": 7,
+    "roomId": "R303",
+    "roomNumber": "303",
+    "title": "Penthouse Luxury",
+    "type": "Penthouse",
+    "bedType": "King",
+    "floor": 3,
+    "roomSizeSqFt": 600,
+    "pricePerNight": 300,
+    "currency": "USD",
+    "maxGuests": 4,
+    "isAvailable": true,
+    "isSmokingAllowed": true,
+    "hasBalcony": true,
+    "view": "Ocean",
+    "features": ["WiFi", "Private Elevator", "Home Theater", "Jacuzzi", "Butler Service", "Mini Bar"],
+    "safetyFeatures": ["Smoke Detector", "Fire Extinguisher", "Panic Button", "Safe Box"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/164595/pexels-photo-164595.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "The penthouse offers the ultimate in luxury and privacy with exclusive amenities and breathtaking ocean views...",
+    "shortDescription": "Exclusive ocean-view penthouse with premium features.",
+    "reviews": []
+  },
+  {
+    "id": 8,
+    "roomId": "R304",
+    "roomNumber": "304",
+    "title": "Economy Saver",
+    "type": "Economy",
+    "bedType": "Single",
+    "floor": 3,
+    "roomSizeSqFt": 150,
+    "pricePerNight": 40,
+    "currency": "USD",
+    "maxGuests": 1,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": false,
+    "view": "City",
+    "features": ["WiFi", "TV", "Basic Toiletries", "Fan"],
+    "safetyFeatures": ["Smoke Detector"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Compact and efficient, this economy room is perfect for short stays and budget travelers...",
+    "shortDescription": "Budget-friendly single room with basic amenities.",
+    "reviews": []
+  },
+  {
+    "id": 9,
+    "roomId": "R305",
+    "roomNumber": "305",
+    "title": "Romantic Getaway",
+    "type": "Couple",
+    "bedType": "Queen",
+    "floor": 3,
+    "roomSizeSqFt": 280,
+    "pricePerNight": 110,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": false,
+    "isSmokingAllowed": true,
+    "hasBalcony": true,
+    "view": "Garden",
+    "features": ["WiFi", "Mood Lighting", "Mini Bar", "Jacuzzi", "Room Service"],
+    "safetyFeatures": ["Smoke Detector", "Safe Box"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "Specially designed for couples, this room includes a Jacuzzi, romantic lighting, and serene garden views...",
+    "shortDescription": "Jacuzzi room for couples with garden view and mood lighting.",
+    "reviews": []
+  },
+  {
+    "id": 10,
+    "roomId": "R306",
+    "roomNumber": "306",
+    "title": "Zen Retreat",
+    "type": "Wellness",
+    "bedType": "Queen",
+    "floor": 3,
+    "roomSizeSqFt": 320,
+    "pricePerNight": 130,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": true,
+    "view": "Mountain",
+    "features": ["WiFi", "Meditation Area", "Aroma Diffuser", "Yoga Mat", "Smart TV"],
+    "safetyFeatures": ["Smoke Detector", "Non-Toxic Paint"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/271618/pexels-photo-271618.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "A peaceful retreat for relaxation, this room includes wellness-focused features like a meditation space...",
+    "shortDescription": "Wellness room with mountain view and meditation area.",
+    "reviews": []
+  },
+  {
+    "id": 11,
+    "roomId": "R307",
+    "roomNumber": "307",
+    "title": "Art Deco Delight",
+    "type": "Boutique",
+    "bedType": "Double",
+    "floor": 3,
+    "roomSizeSqFt": 260,
+    "pricePerNight": 95,
+    "currency": "USD",
+    "maxGuests": 2,
+    "isAvailable": true,
+    "isSmokingAllowed": false,
+    "hasBalcony": false,
+    "view": "City",
+    "features": ["WiFi", "Designer Furniture", "Smart Lighting", "Mini Bar", "Smart TV"],
+    "safetyFeatures": ["Smoke Detector", "Security Alarm"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/279746/pexels-photo-279746.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "A boutique experience with artistic decor, smart lighting, and carefully curated furniture...",
+    "shortDescription": "Stylish boutique room with artistic decor and smart tech.",
+    "reviews": []
+  },
+  {
+    "id": 12,
+    "roomId": "R308",
+    "roomNumber": "308",
+    "title": "Skyline Studio",
+    "type": "Studio",
+    "bedType": "King",
+    "floor": 3,
+    "roomSizeSqFt": 350,
+    "pricePerNight": 140,
+    "currency": "USD",
+    "maxGuests": 3,
+    "isAvailable": false,
+    "isSmokingAllowed": false,
+    "hasBalcony": true,
+    "view": "Skyline",
+    "features": ["WiFi", "Open Kitchenette", "Smart TV", "Workspace", "Balcony Seating"],
+    "safetyFeatures": ["Smoke Detector", "Fire Exit Nearby"],
+    "rating": 0,
+    "reviewsCount": 0,
+    "images": { "main": "https://images.pexels.com/photos/189293/pexels-photo-189293.jpeg?auto=compress&cs=tinysrgb&w=600" },
+    "description": "A modern studio with a panoramic city skyline view, perfect for extended stays with a private kitchenette...",
+    "shortDescription": "Modern skyline-view studio with kitchenette and workspace.",
+    "reviews": []
   }
-  const signUpUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
-  }
-  const googleLogin = () => {
-    const provider = new GoogleAuthProvider();
-    return signInWithPopup(auth, provider)
-  }
-  const githubLogin = () => {
-    const provider = new GithubAuthProvider();
-    return signInWithPopup(auth, provider)
-  }
-
-  const updateProfileInfo = (name, photo) => {
-    return updateProfile(auth.currentUser, { displayName: name, photoURL: photo })
-  }
-
-  const logOutUser = () => {
-    return signOut(auth)
-  }
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false)
-    });
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
-      }
-    };
-  }, []);
-
-  const userAuth = {
-    user, setUser, signInUser, signUpUser, googleLogin, githubLogin, updateProfileInfo, logOutUser,loading,setLoading
-  }
-
-
-
-  return (
-    <AuthContext.Provider value={userAuth}>{children}</AuthContext.Provider>
-  )
-}
-
-export default AuthProvider
+]

@@ -1,7 +1,7 @@
 "use client"
 
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import notFound from "../not-found";
 import {
@@ -45,6 +45,7 @@ const FeatureBadge = ({ icon: Icon, text }) => (
 
 const Page = () => {
     const { user } = useContext(AuthContext)
+    const router = useRouter()
     console.log(user)
     const { id } = useParams();
     const [room, setRoom] = useState(null);
@@ -265,6 +266,7 @@ const Page = () => {
                         </span>
                     </div>
                     <button
+                     onClick={() => router.push(`booking/${room._id}`)}
                         disabled={!room.isAvailable}
                         className={`w-full px-4 py-3 rounded text-white font-semibold transition ${room.isAvailable
                             ? 'bg-blue-600 hover:bg-blue-700'

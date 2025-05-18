@@ -25,7 +25,7 @@ function HomePageRooms() {
         infinite: true,
         pauseOnHover: true,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 5000,
         centerPadding: "60px",
         slidesToShow: 3,
         speed: 500,
