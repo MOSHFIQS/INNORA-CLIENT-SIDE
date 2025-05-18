@@ -6,17 +6,18 @@ import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { BedDouble, Users, Eye } from "lucide-react";
 
 function HomePageRooms() {
-
-    const [allRooms, setAllRooms] = useState([])
-    console.log(allRooms)
+    const [allRooms, setAllRooms] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
-        axios.get('http://localhost:5000/rooms')
-            .then(response => setAllRooms(response.data))
-            .catch(error => toast.error("Failed to fetch rooms data"));
+        axios
+            .get("http://localhost:5000/rooms")
+            .then((response) => setAllRooms(response.data))
+            .catch((error) => toast.error("Failed to fetch rooms data"));
     }, []);
 
     const settings = {
@@ -26,7 +27,7 @@ function HomePageRooms() {
         autoplay: true,
         autoplaySpeed: 2000,
         centerPadding: "60px",
-        slidesToShow: 3, // Required!
+        slidesToShow: 3,
         speed: 500,
         responsive: [
             {
@@ -39,24 +40,43 @@ function HomePageRooms() {
     };
 
     return (
-        <div className="w-full py-10 ">
+        <div className="w-full py-10 overflow-x-hidden bg-gradient-to-br from-gray-900 to-gray-800">
             <Slider {...settings}>
-                {
-                    allRooms.map((singleRooms, idx) => (
-                        <div key={idx} className="px-2">
-                            <div className="bg-[#85817c] text-white rounded-md  uppercase space-y-5 flex flex-col items-center justify-around text-2xl font-bold   p-4 ">
-                                <img src={singleRooms.images.main} className="object-cover w-full h-56 md:h-60 lg:h-72 xl:h-96 rounded-md" alt="" />
-                                <div className="text-center">
-                                    <h3 className="text-lg lg:text-xl xl:text-3xl">{singleRooms.title}</h3>
-                                    <h5 className="text-sm xl:text-lg"> {singleRooms.maxGuests} guest room</h5>
+                {allRooms.map((room, idx) => (
+                    <div key={idx} className="px-3">
+                        <div className="relative group overflow-hidden rounded-md  shadow-lg bg-white border border-white/50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform hover:scale-101">
+                            <img
+                                src={room.images.main}
+                                className="object-cover w-full h-56 md:h-60 lg:h-72 xl:h-96 rounded-t-md transition-transform duration-500 transform hover:scale-105"
+                                alt={room.title}
+                            />
+                            <div className="absolute top-6 left-3 bg-white/80 text-gray-800 text-xs font-semibold px-2 py-1 rounded shadow">
+                                Room #{room.roomNumber}
+                            </div>
+                            <div className="p-5 space-y-4">
+                                <h3 className="text-xl font-extrabold uppercase tracking-wide text-center">
+                                    {room.title}
+                                </h3>
+                                <div className="flex items-center justify-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <span className="flex items-center gap-1">
+                                        <Users className="w-4 h-4" /> {room.maxGuests} Guests
+                                    </span>
+                                    <span className="flex items-center gap-1">
+                                        <Eye className="w-4 h-4" /> {room.view}
+                                    </span>
                                 </div>
-                                <Link href={'/'} className="relative text-xs xl:text-sm after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:translate-x-[0%]">view details</Link>
-
-
+                                <div className="flex justify-center">
+                                    <button
+                                        onClick={() => router.push(room._id)}
+                                        className="mt-2 inline-block px-6 py-2 text-sm font-semibold tracking-wide text-white bg-black/65 border border-white rounded-lg shadow hover:bg-black/70 transition-all duration-300"
+                                    >
+                                        View Details
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    ))
-                }
+                    </div>
+                ))}
             </Slider>
         </div>
     );
