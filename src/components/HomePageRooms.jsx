@@ -67,7 +67,7 @@ function HomePageRooms() {
                                 </div>
                                 <div className="flex justify-center">
                                     <button
-                                        onClick={() => router.push(room._id)}
+                                        onClick={() => router.push(`/roomDetails/${room._id}`)}
                                         className="mt-2 inline-block px-6 py-2 text-sm font-semibold tracking-wide text-white bg-black/65 border border-white rounded-lg shadow hover:bg-black/70 transition-all duration-300"
                                     >
                                         View Details

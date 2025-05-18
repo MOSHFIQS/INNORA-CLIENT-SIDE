@@ -20,7 +20,7 @@ const Rooms = () => {
             {allRooms.map((room) => (
                 <div
                     key={room._id}
-                    onClick={() => router.push(`${room._id}`)}
+                    onClick={() => router.push(`/roomDetails/${room._id}`)}
                     className="bg-white rounded-md border border-gray-300 shadow cursor-pointer hover:scale-101 transition duration-300"
                 >
                     <img

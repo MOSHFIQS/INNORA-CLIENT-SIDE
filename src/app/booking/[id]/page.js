@@ -1,14 +1,17 @@
 'use client'
 
+import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
 import { notFound, useParams } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const BookingPage = () => {
     const { id } = useParams();
+    const { user } = useContext(AuthContext)
     const [loading, setLoading] = useState(true);
     const [roomBookingDetails, setRoomBookingDetails] = useState(null);
-    const [bookingDate, setBookingDate] = useState('');
+
 
     useEffect(() => {
         axios
@@ -20,78 +23,89 @@ const BookingPage = () => {
             .catch(() => setLoading(false));
     }, [id]);
 
-    const handleBooking = () => {
-        if (!bookingDate) {
-            alert("Please select a date before booking.");
-            return;
-        }
 
-        alert(`Booked ${roomBookingDetails.title} on ${bookingDate}`);
+
+    const handleBooking = (e) => {
+        e.preventDefault()
+        const price = roomBookingDetails.pricePerNight
+        const roomId = roomBookingDetails.roomId
+        const image = roomBookingDetails.images.main
+        const title = roomBookingDetails.title
+        const date = e.target.date.value
+        const userEmail = user.email
+        const bookingDetails = {
+            price, roomId, image, date, title, userEmail
+        }
+        console.log(bookingDetails)
+        axios.post('http://localhost:5000/bookings', bookingDetails)
+            .then(res => {
+                toast.success('BOOKING SUCCESSFUL');
+            })
+            .catch(err => {
+                if (err.response?.data?.message === 'User already booked for this date') {
+                    toast.error('You already have a booking on this date.');
+                } else {
+                    toast.error('Something went wrong. Booking unsuccessful.');
+                }
+            });
+
     };
 
     if (loading)
         return <div className="p-10 text-center text-gray-500">Loading...</div>;
     if (!roomBookingDetails || id !== roomBookingDetails._id) return notFound();
 
-    const {
-        roomId,
-        roomNumber,
-        title,
-        shortDescription,
-        pricePerNight,
-        currency,
-        images,
-    } = roomBookingDetails;
+
 
     return (
-        <div className="max-w-[50vw] mx-auto  border flex-col bg-white rounded-md shadow-lg overflow-hidden">
+        <div className="w-[99vw] my-1 mx-auto  flex-col bg-white rounded-md  ">
             {/* Room Image */}
-            <div className="h-[450px] w-full">
+            <div className="h-[490px] w-full">
                 <img
-                    src={images?.main}
-                    alt={title}
-                    className="w-full h-full object-cover object-center"
+                    src={roomBookingDetails.images?.main}
+                    alt={roomBookingDetails.title}
+                    className="w-full h-full object-cover object-center rounded-t-md"
                 />
             </div>
 
             {/* Room Details */}
-            <div className="p-6 space-y-6">
+            <form onSubmit={handleBooking} className="p-6 space-y-6">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
-                    <p className="text-gray-500 mt-1">{shortDescription}</p>
+                    <h1 className="text-3xl font-bold text-gray-800">{roomBookingDetails.title}</h1>
+                    <p className="text-gray-500 mt-1">{roomBookingDetails.shortDescription}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4 text-gray-700">
-                    <p><span className="font-semibold">Room ID:</span> {roomId}</p>
-                    <p><span className="font-semibold">Room Number:</span> {roomNumber}</p>
-                    <p><span className="font-semibold">Price/Night:</span> {currency} {pricePerNight}</p>
+                    <p><span className="font-semibold">Room ID:</span> {roomBookingDetails.roomId}</p>
+                    <p><span className="font-semibold">Room Number:</span> {roomBookingDetails.roomNumber}</p>
+                    <p><span className="font-semibold">Price/Night:</span> {roomBookingDetails.currency} {roomBookingDetails.pricePerNight}</p>
                     <p><span className="font-semibold">Max Guests:</span> 2</p>
                 </div>
 
                 {/* Date Picker */}
-                <div>
+                <div >
                     <label htmlFor="bookingDate" className="block mb-2 text-sm font-medium text-gray-600">
                         Select Booking Date
                     </label>
                     <input
                         type="date"
                         id="bookingDate"
-                        value={bookingDate}
-                        onChange={(e) => setBookingDate(e.target.value)}
+                        required
+                        name='date'
                         className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                     />
                 </div>
 
                 {/* Book Button */}
                 <div>
-                    <button
-                        onClick={handleBooking}
+                    <button type='submit'
+
                         className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition duration-300"
                     >
                         Book Now
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     );
 };

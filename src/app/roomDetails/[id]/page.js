@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
-import notFound from "../not-found";
+import notFound from "../../not-found";
 import {
     BedDouble,
     Ruler,
@@ -266,7 +266,7 @@ const Page = () => {
                         </span>
                     </div>
                     <button
-                     onClick={() => router.push(`booking/${room._id}`)}
+                     onClick={() => router.push(`/booking/${room._id}`)}
                         disabled={!room.isAvailable}
                         className={`w-full px-4 py-3 rounded text-white font-semibold transition ${room.isAvailable
                             ? 'bg-blue-600 hover:bg-blue-700'

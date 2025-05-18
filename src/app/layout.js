@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
             reverseOrder={false}
           />
           <Navbar />
-          <div className="flex justify-center min-h-[calc(100vh-65px)] flex-col">{children}</div>
+          <div className="flex justify-center min-h-[calc(100vh-67px)] flex-col">{children}</div>
         </AuthProvider>
       </body>
     </html>
