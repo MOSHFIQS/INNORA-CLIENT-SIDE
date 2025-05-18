@@ -44,7 +44,12 @@ const BookingPage = () => {
             .catch(err => {
                 if (err.response?.data?.message === 'User already booked for this date') {
                     toast.error('You already have a booking on this date.');
-                } else {
+                } 
+                if (err.response?.data?.message === 'Room already booked for this date') {
+                    toast.error('Room already booked for this date');
+                } 
+                
+                else {
                     toast.error('Something went wrong. Booking unsuccessful.');
                 }
             });

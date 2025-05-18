@@ -240,41 +240,55 @@ const Page = () => {
                     initial={{ opacity: 0, x: 30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
-                    className="bg-gray-100 dark:bg-gray-800 p-6 rounded shadow-md space-y-6 lg:sticky top-20 h-full flex items-center justify-center flex-col"
+                    className="bg-gray-100 dark:bg-gray-800 p-6 rounded shadow-md space-y-10 lg:sticky top-20 h-full flex  justify-center flex-col"
                 >
-                    <div>
-                        <span className="text-3xl font-bold text-green-600">
-                            ${room.pricePerNight}
-                        </span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                            {' '} / night
-                        </span>
+                    {
+                        (room.bookedDates.length > 0) &&
+                        <div className="text-center font-bold">
+                            this room 🚫 Unavailable on :<span className="flex items-center w-full justify-center gap-2 mt-2">
+                                {
+                                    room.bookedDates.map((date, idx) => <div key={idx} className="p-2 border rounded-md bg-[#424d5f]">
+                                        {date}
+                                    </div>)
+                                }
+                            </span>
+                        </div>
+                    }
+                    <div className="flex items-center justify-center flex-col space-y-4">
+                        <div>
+                            <span className="text-3xl font-bold text-green-600">
+                                ${room.pricePerNight}
+                            </span>
+                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                                {' '} / night
+                            </span>
+                        </div>
+                        <div>
+                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Rating: ⭐ {room.rating} ({room.reviewsCount} reviews)
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {room.isAvailable ? (
+                                <CheckCircle className="text-green-500" />
+                            ) : (
+                                <XCircle className="text-red-500" />
+                            )}
+                            <span className="text-sm font-semibold">
+                                {room.isAvailable ? 'Available for Booking' : 'Currently Unavailable'}
+                            </span>
+                        </div>
+                        <button
+                            onClick={() => router.push(`/booking/${room._id}`)}
+                            disabled={!room.isAvailable}
+                            className={`w-full px-4 py-3 rounded text-white font-semibold transition ${room.isAvailable
+                                ? 'bg-blue-600 hover:bg-blue-700'
+                                : 'bg-gray-400 cursor-not-allowed'
+                                }`}
+                        >
+                            {room.isAvailable ? 'Book Now' : 'Unavailable'}
+                        </button>
                     </div>
-                    <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Rating: ⭐ {room.rating} ({room.reviewsCount} reviews)
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        {room.isAvailable ? (
-                            <CheckCircle className="text-green-500" />
-                        ) : (
-                            <XCircle className="text-red-500" />
-                        )}
-                        <span className="text-sm font-semibold">
-                            {room.isAvailable ? 'Available for Booking' : 'Currently Unavailable'}
-                        </span>
-                    </div>
-                    <button
-                     onClick={() => router.push(`/booking/${room._id}`)}
-                        disabled={!room.isAvailable}
-                        className={`w-full px-4 py-3 rounded text-white font-semibold transition ${room.isAvailable
-                            ? 'bg-blue-600 hover:bg-blue-700'
-                            : 'bg-gray-400 cursor-not-allowed'
-                            }`}
-                    >
-                        {room.isAvailable ? 'Book Now' : 'Unavailable'}
-                    </button>
                 </motion.div>
             </div>
         </div>
