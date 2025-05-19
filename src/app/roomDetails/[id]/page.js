@@ -245,7 +245,7 @@ const Page = () => {
                     {
                         (room.bookedDates.length > 0) &&
                         <div className="text-center font-bold">
-                            this room 🚫 Unavailable on :<span className="flex items-center w-full justify-center gap-2 mt-2">
+                            this room 🚫 Unavailable on :<span className="flex items-center w-full justify-center gap-2 mt-2 flex-wrap">
                                 {
                                     room.bookedDates.map((date, idx) => <div key={idx} className="p-2 border rounded-md bg-[#424d5f]">
                                         {date}

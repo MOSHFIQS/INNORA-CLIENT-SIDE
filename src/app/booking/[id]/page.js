@@ -46,11 +46,10 @@ const BookingPage = () => {
                     toast.error('You already have a booking on this date.');
                 } 
                 if (err.response?.data?.message === 'Room already booked for this date') {
-                    toast.error('Room already booked for this date');
+                    return toast.error('Room already booked for this date');
                 } 
-                
-                else {
-                    toast.error('Something went wrong. Booking unsuccessful.');
+                if(!err.response?.data?.message){
+                    toast.error('Something went wrong.Maybe Server Error');
                 }
             });
 
@@ -74,7 +73,7 @@ const BookingPage = () => {
             </div>
 
             {/* Room Details */}
-            <form onSubmit={handleBooking} className="p-6 space-y-6">
+            <form onSubmit={handleBooking} className="p-6 space-y-6 uppercase">
                 <div>
                     <h1 className="text-3xl font-bold text-gray-800">{roomBookingDetails.title}</h1>
                     <p className="text-gray-500 mt-1">{roomBookingDetails.shortDescription}</p>
@@ -105,7 +104,7 @@ const BookingPage = () => {
                 <div>
                     <button type='submit'
 
-                        className="w-full bg-blue-600 text-white py-3 rounded-md font-semibold hover:bg-blue-700 transition duration-300"
+                        className="w-full btn btn-md bg-[#1a77f2] text-white font-bold uppercase"
                     >
                         Book Now
                     </button>

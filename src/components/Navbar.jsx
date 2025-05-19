@@ -1,10 +1,14 @@
+'use client'
 import Link from 'next/link'
 import LogoutButton from './LogoutButton'
+import { useContext } from 'react'
+import { AuthContext } from '@/provider/AuthProvider'
 
 const Navbar = () => {
+  const {user} = useContext(AuthContext)
   
   return (
-    <div className="navbar border border-gray-300">
+    <div className="navbar border border-gray-300 dark:bg-gray-900 bg-white dark:text-white text-black">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -26,14 +30,21 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">
           <li><Link href={'/'}>Home</Link></li>
           <li><Link href={'/rooms'}>Rooms</Link></li>
+          <li><Link href={'/myBookings'}>My Bookings</Link></li>
           <li><a>Item 1</a></li>
           <li><a>Item 1</a></li>
           <li><a>Item 3</a></li>
         </ul>
       </div>
       <div className="navbar-end">
-        <Link href={'/signin'} className="btn">SignIn</Link>
-        <LogoutButton />
+        
+        
+        {
+          user ? <LogoutButton /> : <div className='flex gap-2'>
+            <Link href={'/signin'} className="btn btn-sm bg-white dark:bg-black border-black dark:border-white dark:text-white">SignIn</Link>
+            <Link href={'/signup'} className="btn btn-sm bg-white dark:bg-black border-black dark:border-white dark:text-white">SignUp</Link>
+          </div>
+        }
       </div>
     </div>
   )
