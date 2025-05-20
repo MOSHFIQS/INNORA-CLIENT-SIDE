@@ -15,7 +15,7 @@ function HomePageRooms() {
 
     useEffect(() => {
         axios
-            .get("http://localhost:5000/rooms")
+            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`)
             .then((response) => setAllRooms(response.data))
             .catch((error) => toast.error("Failed to fetch rooms data"));
     }, []);

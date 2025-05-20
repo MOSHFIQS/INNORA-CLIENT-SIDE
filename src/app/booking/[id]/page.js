@@ -15,7 +15,7 @@ const BookingPage = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/rooms/${id}`)
+            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms/${id}`)
             .then((res) => {
                 setRoomBookingDetails(res.data);
                 setLoading(false);
@@ -37,7 +37,7 @@ const BookingPage = () => {
             price, roomId, image, date, title, userEmail
         }
         console.log(bookingDetails)
-        axios.post('http://localhost:5000/bookings', bookingDetails)
+        axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings`, bookingDetails)
             .then(res => {
                 toast.success('BOOKING SUCCESSFUL');
             })

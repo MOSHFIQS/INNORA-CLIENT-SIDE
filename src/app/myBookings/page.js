@@ -1,18 +1,20 @@
 'use client'
 import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { use, useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 const MyBookings = () => {
     const { user } = useContext(AuthContext);
     const [myBooking, setMyBooking] = useState([]);
     const [newDate, setNewDate] = useState('')
+    const router = useRouter()
     console.log(newDate)
 
     useEffect(() => {
         if (user?.email) {
-            axios.get(`http://localhost:5000/bookings/${user.email}`)
+            axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${user.email}`)
                 .then(response => setMyBooking(response.data))
                 .catch(error => console.error('Error fetching bookings:', error));
         }
@@ -21,7 +23,7 @@ const MyBookings = () => {
     const handleCancel = (roomId, date) => {
         console.log(roomId, date)
         // const bookingInfo = {roomId,date}
-        axios.delete(`http://localhost:5000/bookings/${user.email}`, {
+        axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${user.email}`, {
             data: { roomId, date }
         })
             .then(res => {
@@ -43,7 +45,7 @@ const MyBookings = () => {
             newDate, // this comes from state
         };
         console.log(bookingUpdateDateInfo);
-        axios.patch('http://localhost:5000/bookings/update', bookingUpdateDateInfo)
+        axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/update`, bookingUpdateDateInfo)
             .then(res => {
                 toast.success('Date Updated Successfully')
 
@@ -158,7 +160,7 @@ const MyBookings = () => {
 
 
                                 <button
-                                    onClick={() => handleReview(booking._id)}
+                                    onClick={() => router.push(`/review/${booking.roomId}`)}
                                     className="btn btn-sm btn-accent text-white"
                                 >
                                     ⭐ Review

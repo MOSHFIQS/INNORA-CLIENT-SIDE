@@ -53,7 +53,7 @@ const Page = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:5000/rooms/${id}`)
+            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms/${id}`)
             .then((res) => {
                 setRoom(res.data);
                 setLoading(false);
@@ -67,41 +67,7 @@ const Page = () => {
 
 
 
-    // handle the reviews post
-    const handleReview = async (e) => {
-        e.preventDefault();
-        const form = e.target;
-        const user_email = user?.email;
-        const user_name = user?.displayName || "Anonymous";
-        const comment = form.comment.value;
-        const rating = parseInt(form.rating.value);
 
-        if (!user_email) {
-            toast.error('YOU MUST BE SIGN IN')
-            return;
-        }
-
-        try {
-            const res = await axios.patch(`http://localhost:5000/rooms/${id}/reviews`, {
-                user_email,
-                user_name,
-                comment,
-                rating,
-            })
-                .then(res => {
-                    form.reset();
-                    toast.success(`Your feedback has been recorded successfully. We value your opinion and strive to continuously enhance our service.`)
-                    console.log(res)
-                })
-        } catch (error) {
-            if (error.response?.data?.message) {
-                toast.error(`${error.response.data.message}`);
-            } else {
-                toast.error("Failed to submit review. Please try again later.");
-            }
-            console.error(error);
-        }
-    }
 
 
 
@@ -188,49 +154,9 @@ const Page = () => {
                             })}
                         </div>
                     </div>
-                    {/* // Add this inside your JSX (e.g., below the Room Features section) */}
-                    {/* Leave a Review */}
-                    <div>
-                        <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
-                        <form
-                            onSubmit={handleReview}
-                            className="space-y-4"
-                        >
-                            <input
-                                name="user_name"
-                                defaultValue={user?.displayName || ""}
-                                disabled={true}
-                                className="w-full p-2 rounded border"
-                                placeholder="Your name"
-                                required
-                            />
-                            <textarea
-                                name="comment"
-                                placeholder="Your comment"
-                                className="w-full p-2 rounded border"
-                                required
-                            />
-                            <select
-                                name="rating"
-                                className="w-full p-2 rounded border bg-black"
-                                required
-                                defaultValue=""
-                            >
-                                <option value="" disabled>Rating</option>
-                                <option value="5">5 - Excellent</option>
-                                <option value="4">4 - Good</option>
-                                <option value="3">3 - Average</option>
-                                <option value="2">2 - Poor</option>
-                                <option value="1">1 - Terrible</option>
-                            </select>
-                            <button
-                                type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded"
-                            >
-                                Submit Review
-                            </button>
-                        </form>
-                    </div>
+
+
+                    
 
 
                 </motion.div>
