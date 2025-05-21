@@ -1,7 +1,7 @@
 'use client';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { notFound, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { AuthContext } from '@/provider/AuthProvider';
 

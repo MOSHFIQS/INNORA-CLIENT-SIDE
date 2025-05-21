@@ -11,7 +11,6 @@ export const AuthContext = createContext(null)
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
-    console.log(user)
 
 
     const signInUser = (email, password) => {
@@ -42,7 +41,6 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             if (currentUser?.email ) {
                 const loggedUser = { email: currentUser?.email };
-                console.log(user, currentUser)
                 axios
                     .post(`${process.env.NEXT_PUBLIC_BASE_URL}/jwt`, loggedUser, { withCredentials: true })
                     .then(res => console.log('Token response:', res.data))
@@ -63,7 +61,7 @@ const AuthProvider = ({ children }) => {
                 unsubscribe();
             }
         };
-    }, []);
+    }, [user]);
 
     const authInfo = {
         user, setUser, signInUser, signUpUser, googleLogin, updateProfileInfo, logOutUser, loading, setLoading

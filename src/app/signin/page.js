@@ -17,7 +17,6 @@ const Page = () => {
         const form = e.target
         const email = form.email.value
         const password = form.password.value
-        console.log(email, password)
         signInUser(email, password)
             .then(result => {
                 router.push('/')
@@ -73,7 +72,7 @@ const Page = () => {
                                 SignIn
                             </button>
                             <p className="mt-4 text-center w-full hover:text-white">
-                                Don't have an account? <Link href={'/signup'} className='text-black   hover:text-white'>SignUp</Link>
+                                Dont have an account? <Link href={'/signup'} className='text-black   hover:text-white'>SignUp</Link>
                             </p>
                         </div>
                         <div className="divider text-white my-0">OR</div>

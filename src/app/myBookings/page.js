@@ -11,18 +11,15 @@ const MyBookings = () => {
     const [myBooking, setMyBooking] = useState([]);
     const [newDate, setNewDate] = useState('')
     const router = useRouter()
-    console.log(newDate)
 
     useEffect(() => {
         if (!user?.email) return
         axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings?email=${user?.email}`, { withCredentials: true })
             .then(response => setMyBooking(response.data))
-            .catch(error => console.error('Error fetching bookings:', error));
+            .catch(error => toast.error('failed to set my bookings'));
     }, [user]);
 
     const handleCancel = (roomId, date) => {
-        console.log(roomId, date)
-        // const bookingInfo = {roomId,date}
         axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${user.email}`, {
             data: { roomId, date }
         })
@@ -44,7 +41,6 @@ const MyBookings = () => {
             email,
             newDate, // this comes from state
         };
-        console.log(bookingUpdateDateInfo);
         axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/update`, bookingUpdateDateInfo)
             .then(res => {
                 toast.success('Date Updated Successfully')

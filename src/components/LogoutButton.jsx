@@ -8,7 +8,7 @@ const LogoutButton = () => {
         logOutUser()
     }
     return (
-        <button className='btn btn-sm bg-white dark:bg-black border-black dark:border-white dark:text-white' onClick={handleLogout}>
+        <button className='    dark:text-white' onClick={handleLogout}>
             Logout
         </button>
     );

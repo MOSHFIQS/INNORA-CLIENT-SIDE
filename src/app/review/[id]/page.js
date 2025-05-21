@@ -36,7 +36,6 @@ const ReviewPage = () => {
             // form.reset();
             router.push('/')
             toast.success(`Your feedback has been recorded successfully. We value your opinion and strive to continuously enhance our service.`);
-            console.log(res);
         } catch (error) {
             toast.error("Failed to submit review. Please try again later.");
 

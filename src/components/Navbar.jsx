@@ -37,7 +37,7 @@ const Navbar = () => {
         <Link href={'/'} className="text-2xl font-extrabold">INNORA</Link>
       </div>
       <div className="navbar-center hidden lg:flex uppercase">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 gap-4">
           <li><Link href={'/'}>Home</Link></li>
           <li><Link href={'/rooms'}>Rooms</Link></li>
           {

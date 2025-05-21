@@ -7,8 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { BedDouble, Users, Eye } from "lucide-react";
-import Link from "next/link";
+import { Users, Eye } from "lucide-react";
 import { AuthContext } from "@/provider/AuthProvider";
 
 function HomePageRooms() {

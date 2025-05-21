@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import notFound from "../../not-found";
 import {
     BedDouble,
@@ -17,13 +17,10 @@ import {
     Lock,
     AlertTriangle,
     FireExtinguisher,
-    Safe,
     CheckCircle,
     XCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { AuthContext } from "@/provider/AuthProvider";
-import toast from "react-hot-toast";
 
 const iconMap = {
     "WiFi": Wifi,
@@ -44,9 +41,7 @@ const FeatureBadge = ({ icon: Icon, text }) => (
 );
 
 const Page = () => {
-    const { user } = useContext(AuthContext)
     const router = useRouter()
-    console.log(user)
     const { id } = useParams();
     const [room, setRoom] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -59,7 +54,7 @@ const Page = () => {
                 setLoading(false);
             })
             .catch(() => setLoading(false));
-    }, []);
+    }, [id]);
 
     if (loading)
         return <div className="p-10 text-center text-gray-500">Loading...</div>;

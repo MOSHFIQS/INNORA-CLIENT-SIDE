@@ -36,7 +36,6 @@ const BookingPage = () => {
         const bookingDetails = {
             price, roomId, image, date, title, userEmail
         }
-        console.log(bookingDetails)
         axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings`, bookingDetails)
             .then(res => {
                 toast.success('BOOKING SUCCESSFUL');

@@ -32,7 +32,6 @@ const signup = () => {
 
         signUpUser(email,password)
         .then(result => {
-            console.log(result.user)
             setPasswordError('');
             updateProfileInfo(name,imageUrl)
             router.push('/')

@@ -13,20 +13,6 @@ const HotelMap = () => {
 
             {/* Info + Map Section */}
             <div className="w-full relative flex flex-col lg:flex-row items-center justify-center gap-5 px-0.5 lg:px-5 py-2 bg-black text-white rounded-b">
-                {/* Hotel Info */}
-                {/* <div className=" absolute top-3  left-6 space-y-4 text-center font-bold hidden bg-black lg:block px-3">
-                    <h2 className="text-4xl font-bold ">INNORA </h2>
-                    <p className="text-lg">
-                        123 Queen Street, Melbourne, VIC 3000
-                    </p>
-                    <p className="">
-                        Phone: +61 3 1234 5678
-                        <br />
-                        Email: contact@grandelitehotel.com
-                    </p>
-                </div> */}
-
-                {/* Embedded Google Map */}
                 <div className="w-full  h-96 md:h-[600px] lg:h-[700px] shadow-lg rounded-lg overflow-hidden border-4 border-white">
                     <iframe
                         title="Hotel Location - Google Map"
