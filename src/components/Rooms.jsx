@@ -1,19 +1,23 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { AuthContext } from '@/provider/AuthProvider';
 
 const Rooms = () => {
+    const { user } = useContext(AuthContext)
     const [allRooms, setAllRooms] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
+        if (!user?.email) return; 
         axios
-            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`)
+            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms?email=${user.email}`, { withCredentials: true })
             .then((response) => setAllRooms(response.data))
             .catch(() => toast.error("Failed to fetch rooms data"));
-    }, []);
+    }, [user]);
+
 
     return (
         <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 bg-[#1c1c1c]">

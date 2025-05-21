@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "@/components/Footer";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 
 export const metadata = {
@@ -17,7 +18,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme='light'>
       <body
-        className={``}
+        className={`font-mono`}
       >
         <AuthProvider>
           <Toaster
@@ -26,7 +27,7 @@ export default function RootLayout({ children }) {
           />
           <Navbar />
           <div className="flex justify-center min-h-[calc(100vh-67px)] flex-col bg-[#1c1c1c]">
-            
+            <ScrollToTopButton />
             {children}
           </div>
           <Footer />

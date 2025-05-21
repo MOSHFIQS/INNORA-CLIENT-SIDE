@@ -3,23 +3,26 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { BedDouble, Users, Eye } from "lucide-react";
 import Link from "next/link";
+import { AuthContext } from "@/provider/AuthProvider";
 
 function HomePageRooms() {
+    const {user,loading} = useContext(AuthContext)
     const [allRooms, setAllRooms] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
         axios
-            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms`)
+            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/homePageRooms`)
             .then((response) => setAllRooms(response.data))
-            .catch((error) => toast.error("Failed to fetch rooms data"));
-    }, []);
+            .catch(() => toast.error("Failed to fetch rooms data"));
+    }, [user]);
+    
 
     const settings = {
         className: "center",
@@ -51,17 +54,23 @@ function HomePageRooms() {
             },
         ],
     };
+
+    if(loading){
+        return <div className="text-white text-4xl h-screen w-screen flex items-center justify-center">
+            loading
+        </div>
+    }
     
 
     return (
         <div className="py-10 space-y-10 bg-[#1c1c1c]">
-           <div className="text-center  font-mono">
+           <div className="text-center  ">
                 <h1 className="text-white font-extrabold text-5xl">EXPLORE YOUR ROOM</h1>
                 <h1 className="text-white font-extrabold text-3xl">Find Rooms Based On Interests</h1>
            </div>
             <div className="w-full  overflow-x-hidden bg-[#1c1c1c]">
                 <Slider {...settings}>
-                    {allRooms.map((room, idx) => (
+                    {allRooms.slice(0,5).map((room, idx) => (
                         <div key={idx} className="px-3">
                             <div className="relative group overflow-hidden rounded-md border-4  border-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform ">
                                 <img

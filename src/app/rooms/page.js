@@ -1,8 +1,10 @@
+
 import Rooms from '@/components/Rooms';
+import PrivateRoute from '@/privateRoute/PrivateRoute';
 
 const roomsPage = () => {
     return (
-        <Rooms />
+        <PrivateRoute><Rooms /></PrivateRoute>
     );
 };
 

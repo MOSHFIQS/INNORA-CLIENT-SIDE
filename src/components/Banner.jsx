@@ -6,6 +6,7 @@ import "swiper/css/autoplay";
 import "swiper/css/pagination";
 
 import React, { useState } from "react";
+import Link from "next/link";
 
 const Banner = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -77,7 +78,7 @@ const Banner = () => {
         className="h-full"
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} className="relative w-full h-full z-0">
+          <SwiperSlide key={index} className="relative w-full h-full z-0 ">
             <img
               src={slide.image}
               alt={`Slide ${index + 1}`}
@@ -90,11 +91,15 @@ const Banner = () => {
             {/* Glassmorphism content box */}
             <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
               <div className=" backdrop-blur-md rounded-md p-6 sm:p-8 md:p-10 border border-white/20  animate-fadeUp">
-                <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-md">{slide.title}</h2>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white drop-shadow-md">{slide.title}</h2>
                 <p className="mt-4 text-sm sm:text-lg text-white/90 max-w-xl">{slide.description}</p>
-                <button className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-white/80 to-white/60 text-black font-medium hover:from-white hover:to-white transition-all duration-300 shadow-md">
-                  Learn More
+
+                <button className="cursor-pointer font-semibold overflow-hidden relative z-100 border border-white group px-2 py-1 mt-4">
+                  <Link href={'/rooms'} className="relative z-10 text-white group-hover:text-black text-sm duration-500">Learn More</Link>
+                  <span className="absolute w-full h-full bg-[#c0a783] -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-500"></span>
+                  <span className="absolute w-full h-full bg-[#c0a783] -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-500"></span>
                 </button>
+
               </div>
             </div>
           </SwiperSlide>

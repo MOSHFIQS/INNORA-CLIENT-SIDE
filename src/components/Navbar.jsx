@@ -20,7 +20,9 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-gray-900  border-white z-1 mt-[19px] -left-[9px] w-52 p-2 shadow">
             <li><Link href={'/'}>Home</Link></li>
             <li><Link href={'/rooms'}>Rooms</Link></li>
-            <li><Link href={'/myBookings'}>My Bookings</Link></li>
+            {
+              user && <li><Link href={'/myBookings'}>My Bookings</Link></li>
+            }
             <li><Link href={'/contact'}>Contact</Link></li>
             <li><Link href={'/findUs'}>FIND US</Link></li>
             <li><Link href={'/rooms'}>BOOK NOW</Link></li>
@@ -38,7 +40,9 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">
           <li><Link href={'/'}>Home</Link></li>
           <li><Link href={'/rooms'}>Rooms</Link></li>
-          <li><Link href={'/myBookings'}>My Bookings</Link></li>
+          {
+            user && <li><Link href={'/myBookings'}>My Bookings</Link></li>
+          }
           <li><Link href={'/contact'}>Contact</Link></li>
           <li><Link href={'/findUs'}>FIND US</Link></li>
           {
@@ -52,8 +56,8 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         
-        <button className="cursor-pointer font-semibold overflow-hidden relative z-100 border border-white group px-5 py-2">
-          <span className="relative z-10 text-white group-hover:text-black text-xl duration-500">BOOK NOW</span>
+        <button className="cursor-pointer font-semibold overflow-hidden relative z-100 border border-white group px-2 py-1">
+          <span className="relative z-10 text-white group-hover:text-black text-sm duration-500">BOOK NOW</span>
           <span className="absolute w-full h-full bg-[#c0a783] -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-500"></span>
           <span className="absolute w-full h-full bg-[#c0a783] -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-500"></span>
         </button>

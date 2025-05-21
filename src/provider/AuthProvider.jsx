@@ -1,5 +1,6 @@
 'use client'
 import auth from '@/firebase/firebase.config';
+import axios from 'axios';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import React, { createContext, useEffect, useState } from 'react';
 
@@ -39,6 +40,21 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            if (currentUser?.email ) {
+                const loggedUser = { email: currentUser?.email };
+                console.log(user, currentUser)
+                axios
+                    .post('http://localhost:5000/jwt', loggedUser, { withCredentials: true })
+                    .then(res => console.log('Token response:', res.data))
+                    .catch(err => console.error('JWT request error:', err));
+                setLoading(false);
+            } else {
+                axios
+                    .post('http://localhost:5000/logout', {},{ withCredentials: true })
+                    .then(res => console.log('Logout response:', res.data))
+                    .catch(err => console.error('Logout request error:', err));
+                setLoading(false);
+            }
             setLoading(false)
         });
 

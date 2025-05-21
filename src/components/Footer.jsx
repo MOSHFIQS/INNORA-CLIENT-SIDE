@@ -4,10 +4,10 @@ import { MdOutlineMail } from "react-icons/md";
 import { BsSend } from "react-icons/bs";
 const Footer = () => {
     return (
-        <div className='font-mono'>
-            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed bg-[url('/slider1.jpg')] text-black  bg-[#b99d75]">
+        <div className=''>
+            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed bg-[url('/slider1.jpg')] text-black  bg-[#b99d75] cormorant">
                 <div className=" bg-white/10 backdrop-blur-xl grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 place-items-start justify-items-center gap-8 h-full w-full p-10 rounded-lg">
-                    <aside className="flex flex-col items-center md:items-start  gap-1">
+                    <aside className="flex flex-col items-center md:items-start  gap-4">
                         <div className='flex items-center'>
                             {/* <img src='/logo.png' draggable={false} className="w-16 hover:scale-105 duration-300 " alt="" /> */}
                             <p className=" hover:text-white text-3xl  font-extrabold font-sans">
@@ -15,17 +15,17 @@ const Footer = () => {
                             </p>
 
                         </div>
-                        <p className='hover:text-white'>Luxurious, spacious, and elegantly designed rooms offering top-tier comfort.</p>
+                        <p className='hover:text-white text-[14px]'>Luxurious, spacious, and elegantly designed rooms offering top-tier comfort.</p>
                         <div className='flex gap-3'>
-                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>O</button>
-                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>O</button>
-                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>O</button>
-                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>O</button>
+                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>FB</button>
+                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>IN</button>
+                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>TW</button>
+                            <button className='w-10 h-10 hover:bg-white hover:text-black duration-300 bg-black text-white'>YT</button>
                         </div>
                     </aside>
                     <nav className="grid gap-2 w-full ">
                         <h6 className=" text-2xl font-bold hover:text-white">| Contact Us</h6>
-                        <a className="link link-hover hover:text-white">No: 58 A, East Madison Street, Baltimore, MD, USA 4508</a>
+                        <a className="link link-hover hover:text-white text-[14px]">No: 58 A, East Madison Street, Baltimore, MD, USA 4508</a>
                         <h1 className="flex items-center justify-center md:justify-start gap-5 hover:text-white "><span><LuPhoneCall size={20} /></span> +00 123 456 789</h1>
                         <h1 className="flex items-center justify-center md:justify-start gap-5 hover:text-white "><span><MdOutlineMail size={20} /></span> innora@gmail.com</h1>
                     </nav>
@@ -46,7 +46,7 @@ const Footer = () => {
                     </nav>
                     <nav className="grid gap-2 text-start">
                         <h6 className=" text-2xl font-bold hover:text-white">| Our Newsletter</h6>
-                        <p className=" hover:text-white">Parturient vel per id venenatis venenatis litora. Conubia mauris leo metus eros tincidunt. </p>
+                        <p className=" hover:text-white text-[14px]">Parturient vel per id venenatis venenatis litora. Conubia mauris leo metus eros tincidunt. </p>
                         <div className='border hover:border-white hover:duration-200  flex gap-1 items-center  p-1'>
                             <input type="text" placeholder='Email Address' className='hover:placeholder:text-white w-full  py-2 px-3' />
                             <button className='w-14 h-full flex items-center justify-center bg-black text-white hover:bg-white hover:text-black'><BsSend /></button>

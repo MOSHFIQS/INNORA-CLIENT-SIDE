@@ -1,7 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap');
 @import "tailwindcss";
 @plugin "daisyui";
 
 
+
+.cormorant {
+  font-family: "Cormorant", serif;
+}
+.thin-text {
+  font-family: 'Cormorant', serif;
+  font-weight: 100;
+  /* Very thin */
+}
 
 
 /* :root {
@@ -13,7 +23,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {

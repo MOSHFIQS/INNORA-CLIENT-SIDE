@@ -69,7 +69,7 @@ const services = [
 export default function HotelServices() {
     return (
         <div className="bg-gray-700 flex items-center justify-center flex-col space-y-16 py-16">
-            <h1 className=" text-4xl md:text-5xl font-extrabold  text-white text-center uppercase font-mono">Stay in Luxury with Top-Rated Amenities</h1>
+            <h1 className=" text-4xl md:text-5xl font-extrabold  text-white text-center uppercase ">Stay in Luxury with Top-Rated Amenities</h1>
             <section className="bg-gray-700 text-white  px-6 md:px-20">
                 <div className="grid gap-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                     {services.map((service, index) => (

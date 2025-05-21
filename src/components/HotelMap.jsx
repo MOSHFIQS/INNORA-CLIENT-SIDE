@@ -4,7 +4,7 @@ const HotelMap = () => {
     return (
         <div className="w-full border-4  ">
             {/* Heading Section */}
-            <div className="text-center py-3 md:py-10  bg-[#1c1c1c] text-white font-mono">
+            <div className="text-center py-3 md:py-10  bg-[#1c1c1c] text-white ">
                 <h1 className="text-4xl md:text-6xl font-extrabold tracking-wide">Explore Our Location</h1>
                 <p className="mt-4 text-lg md:text-xl text-gray-300">
                     Find us in the heart of Melbourne’s vibrant city center

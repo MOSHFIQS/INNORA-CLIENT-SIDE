@@ -46,43 +46,43 @@ const signup = () => {
         // sign up
         <div >
             <div className="flex flex-col items-center justify-center h-screen  ">
-                <div className="w-full max-w-md rounded-lg shadow p-6 border border-gray-300 bg-[#c0a783]">
-                    <h2 className="text-3xl font-bold mb-4 text-center uppercase text-white">SignUp To INNORA</h2>
+                <div className="w-full max-w-md  p-6 border border-gray-300 bg-[#c0a783]">
+                    <h2 className="text-2xl font-bold mb-4 text-center uppercase text-white">SignUp To INNORA</h2>
                     <form onSubmit={handleSignUp} className="flex flex-col gap-2">
                         <input
                             placeholder="Name"
-                            className="p-3 border hover:border-white w-full "
+                            className="p-3 border hover:border-white w-full hover:placeholder:text-white "
                             type="text"
                             name='name'
                         />
                         <input
                             placeholder="Email address"
-                            className="p-3 border hover:border-white w-full "
+                            className="p-3 border hover:border-white w-full hover:placeholder:text-white "
                             type="email"
                             name='email'
                         />
                         <input
                             placeholder="Password"
-                            className="p-3 border hover:border-white w-full "
+                            className="p-3 border hover:border-white w-full hover:placeholder:text-white "
                             type="password"
                             name='password'
                         />
                         <h1 className="text-red-600 font-bold">{passwordError}</h1>
                         <input
                             placeholder="Add Image"
-                            className="p-3 border hover:border-white w-full "
+                            className="p-3 border hover:border-white w-full hover:placeholder:text-white "
                             type="text"
                             name='image'
                         />
                         <div className='w-full'>
                             <button
-                                className="bg-gradient-to-r w-full from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
+                                className="bg-black border w-full py-2 border-white text-white uppercase hover:bg-white hover:text-black hover:border-black font-extrabold"
                                 type="submit"
                             >
                                 SignUp
                             </button>
-                            <p className="mt-4 text-center w-full">
-                                Already have an account? <Link href={'/signin'} className='text-blue-600 font-bold '>SignIn</Link>
+                            <p className="mt-4 text-center w-full hover:text-white">
+                                Already have an account? <Link href={'/signin'} className='font-bold '>SignIn</Link>
                             </p>
                         </div>
                     </form>
