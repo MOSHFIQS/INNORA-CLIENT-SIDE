@@ -16,12 +16,12 @@ const Rooms = () => {
     }, []);
 
     return (
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 bg-[#1c1c1c]">
             {allRooms.map((room) => (
                 <div
                     key={room._id}
                     onClick={() => router.push(`/roomDetails/${room._id}`)}
-                    className="bg-white rounded-md border border-gray-300 shadow cursor-pointer hover:scale-101 transition duration-300"
+                    className="bg-[#c0a783] rounded-md border border-gray-200 shadow cursor-pointer hover:scale-101 transition duration-300"
                 >
                     <img
                         src={room.images?.main}
@@ -29,13 +29,13 @@ const Rooms = () => {
                         className="h-48 w-full object-cover rounded-t-md "
                     />
                     <div className="p-4">
-                        <h3 className="text-lg font-semibold text-gray-800">{room.title}</h3>
-                        <p className="text-sm text-gray-600">{room.shortDescription}</p>
+                        <h3 className="text-lg font-semibold text-gray-800 hover:text-white">{room.title}</h3>
+                        <p className="text-sm text-gray-600 hover:text-white">{room.shortDescription}</p>
                         <div className="mt-2 text-sm text-gray-700">
-                            <p><strong>Type:</strong> {room.type}</p>
-                            <p><strong>Bed:</strong> {room.bedType}</p>
-                            <p><strong>Price:</strong> ${room.pricePerNight} {room.currency}/night</p>
-                            <p><strong>Guests:</strong> Max {room.maxGuests}</p>
+                            <p className='hover:text-white'><strong>Type:</strong> {room.type}</p>
+                            <p className='hover:text-white'><strong>Bed:</strong> {room.bedType}</p>
+                            <p className='hover:text-white'><strong>Price:</strong> ${room.pricePerNight} {room.currency}/night</p>
+                            <p className='hover:text-white'><strong>Guests:</strong> Max {room.maxGuests}</p>
                         </div>
                     </div>
                 </div>

@@ -3,48 +3,61 @@ import Link from 'next/link'
 import LogoutButton from './LogoutButton'
 import { useContext } from 'react'
 import { AuthContext } from '@/provider/AuthProvider'
+import { BsFillMenuButtonWideFill } from "react-icons/bs";
 
 const Navbar = () => {
   const {user} = useContext(AuthContext)
   
   return (
-    <div className="navbar border border-gray-300 dark:bg-gray-900 bg-white dark:text-white text-black">
-      <div className="navbar-start">
+    <div className="navbar border border-gray-300 dark:bg-[#1c1c1c] bg-white dark:text-white text-black relative">
+      <div className="navbar-start gap-2">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
+          <div tabIndex={0} role="button" className=" w-10 flex items-center justify-center  lg:hidden">
+            <BsFillMenuButtonWideFill size={25}/>
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+            className="menu menu-sm dropdown-content bg-gray-900  border-white z-1 mt-[19px] -left-[9px] w-52 p-2 shadow">
+            <li><Link href={'/'}>Home</Link></li>
             <li><Link href={'/rooms'}>Rooms</Link></li>
-            <li><a>Item 1</a></li>
-            <li><a>Item 1</a></li>
-            <li><a>Item 1</a></li>
-            <li><a>Item 3</a></li>
+            <li><Link href={'/myBookings'}>My Bookings</Link></li>
+            <li><Link href={'/contact'}>Contact</Link></li>
+            <li><Link href={'/findUs'}>FIND US</Link></li>
+            <li><Link href={'/rooms'}>BOOK NOW</Link></li>
+            {
+              user ? <LogoutButton /> : <div className='flex flex-col gap-2'>
+                <li><Link href={'/signin'} className="">SignIn</Link></li>
+                <li><Link href={'/signup'} className="">SignUp</Link></li>
+              </div>
+            }
           </ul>
         </div>
         <Link href={'/'} className="text-2xl font-extrabold">INNORA</Link>
       </div>
-      <div className="navbar-center hidden lg:flex">
+      <div className="navbar-center hidden lg:flex uppercase">
         <ul className="menu menu-horizontal px-1">
           <li><Link href={'/'}>Home</Link></li>
           <li><Link href={'/rooms'}>Rooms</Link></li>
           <li><Link href={'/myBookings'}>My Bookings</Link></li>
-          <li><a>Item 1</a></li>
-          <li><a>Item 1</a></li>
-          <li><a>Item 3</a></li>
+          <li><Link href={'/contact'}>Contact</Link></li>
+          <li><Link href={'/findUs'}>FIND US</Link></li>
+          {
+            user ? <LogoutButton /> : <div className='flex gap-2'>
+              <li><Link href={'/signin'} className="">SignIn</Link></li>
+              <li><Link href={'/signup'} className="">SignUp</Link></li>
+            </div>
+          }
+          
         </ul>
       </div>
       <div className="navbar-end">
         
+        <button className="cursor-pointer font-semibold overflow-hidden relative z-100 border border-white group px-5 py-2">
+          <span className="relative z-10 text-white group-hover:text-black text-xl duration-500">BOOK NOW</span>
+          <span className="absolute w-full h-full bg-[#c0a783] -left-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:left-0 duration-500"></span>
+          <span className="absolute w-full h-full bg-[#c0a783] -right-32 top-0 -rotate-45 group-hover:rotate-0 group-hover:right-0 duration-500"></span>
+        </button>
         
-        {
-          user ? <LogoutButton /> : <div className='flex gap-2'>
-            <Link href={'/signin'} className="btn btn-sm bg-white dark:bg-black border-black dark:border-white dark:text-white">SignIn</Link>
-            <Link href={'/signup'} className="btn btn-sm bg-white dark:bg-black border-black dark:border-white dark:text-white">SignUp</Link>
-          </div>
-        }
       </div>
     </div>
   )

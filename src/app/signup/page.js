@@ -44,33 +44,33 @@ const signup = () => {
     }
     return (
         // sign up
-        <div>
-            <div className="flex flex-col items-center justify-center h-screen ">
-                <div className="w-full max-w-md rounded-lg shadow p-6 border border-gray-300">
-                    <h2 className="text-2xl font-bold mb-4 text-center">SignUp To INNORA</h2>
+        <div >
+            <div className="flex flex-col items-center justify-center h-screen  ">
+                <div className="w-full max-w-md rounded-lg shadow p-6 border border-gray-300 bg-[#c0a783]">
+                    <h2 className="text-3xl font-bold mb-4 text-center uppercase text-white">SignUp To INNORA</h2>
                     <form onSubmit={handleSignUp} className="flex flex-col gap-2">
                         <input
                             placeholder="Name"
-                            className="input input-bordered w-full"
+                            className="p-3 border hover:border-white w-full "
                             type="text"
                             name='name'
                         />
                         <input
                             placeholder="Email address"
-                            className="input input-bordered w-full"
+                            className="p-3 border hover:border-white w-full "
                             type="email"
                             name='email'
                         />
                         <input
                             placeholder="Password"
-                            className="input input-bordered w-full"
+                            className="p-3 border hover:border-white w-full "
                             type="password"
                             name='password'
                         />
                         <h1 className="text-red-600 font-bold">{passwordError}</h1>
                         <input
                             placeholder="Add Image"
-                            className="input input-bordered w-full"
+                            className="p-3 border hover:border-white w-full "
                             type="text"
                             name='image'
                         />

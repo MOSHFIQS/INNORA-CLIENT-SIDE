@@ -5,6 +5,7 @@ import AuthProvider from "@/provider/AuthProvider";
 import { Toaster } from 'react-hot-toast';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Footer from "@/components/Footer";
 
 
 export const metadata = {
@@ -15,7 +16,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" data-theme='light'>
-      <body 
+      <body
         className={``}
       >
         <AuthProvider>
@@ -24,7 +25,11 @@ export default function RootLayout({ children }) {
             reverseOrder={false}
           />
           <Navbar />
-          <div className="flex justify-center min-h-[calc(100vh-67px)] flex-col">{children}</div>
+          <div className="flex justify-center min-h-[calc(100vh-67px)] flex-col bg-[#1c1c1c]">
+            
+            {children}
+          </div>
+          <Footer />
         </AuthProvider>
       </body>
     </html>

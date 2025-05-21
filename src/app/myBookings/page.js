@@ -74,14 +74,14 @@ const MyBookings = () => {
 
     if (!myBooking.length > 0) {
         return (
-            <div className='h-full w-full flex justify-center'>
-                <h1 className=' md:text-3xl text-xl lg:text-4xl xl:text-6xl text-gray-500 font-extrabold'>SORRY YOU DON'T BOOK ANY ROOM</h1>
+            <div className='h-full w-full flex justify-center '>
+                <h1 className=' md:text-3xl text-xl lg:text-4xl xl:text-6xl text-white font-extrabold'>SORRY YOU DON'T BOOK ANY ROOM</h1>
             </div>
         )
     }
 
     return (
-        <div className=" min-h-screen bg-gradient-to-br from-indigo-50 via-white to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 uppercase">
+        <div className=" min-h-screen bg[#1c1c1c] uppercase">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold my-5 md:my-14 text-center text-gray-900 dark:text-white whitespace-nowrap">
                 My Bookings
             </h2>
