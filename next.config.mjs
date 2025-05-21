@@ -8,7 +8,8 @@ const nextConfig = {
             'cdn1.iconfinder.com',
             'cdn2.iconfinder.com',
             'cdn3.iconfinder.com',
-            'purepng.com'
+            'purepng.com',
+            'images.pexels.com'
         ]
     }
 };

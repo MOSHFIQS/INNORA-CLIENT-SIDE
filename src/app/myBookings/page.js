@@ -79,11 +79,11 @@ const MyBookings = () => {
                             className="relative group bg-white/80 dark:bg-gray-800/60 backdrop-blur-xl border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden  transition-transform duration-300 hover:scale-[1]"
                         >
                             <Image
-                                src={booking.image || '/fallback.jpg'} // Provide fallback if needed
-                                alt={booking.title || 'Booking image'}
-                                fill
-                                className="object-cover object-center transition duration-300 group-hover:scale-105"
-                                unoptimized={booking.image?.startsWith('http')}
+                                width={300}
+                                height={300}
+                                src={booking.image}
+                                alt={booking.title}
+                                className="w-full h-52 object-cover object-center transition duration-300 group-hover:scale-105"
                             />
                             <div className="p-6 space-y-3 flex justify-center flex-col items-center">
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-white">{booking.title}</h3>
@@ -123,14 +123,14 @@ const MyBookings = () => {
                                             <input
                                                 onChange={e => setNewDate(e.target.value)}
                                                 type="date"
-                                                
+
                                                 required
                                                 className="input input-bordered w-full my-4"
                                                 min={new Date().toISOString().split("T")[0]} // ekhane min date set kora hocche ajker date
                                             />
 
                                             <div className="modal-action">
-                                                <label htmlFor={`update_modal_${booking._id}`}  className="btn">Cancel</label>
+                                                <label htmlFor={`update_modal_${booking._id}`} className="btn">Cancel</label>
                                                 <label
                                                     htmlFor={`update_modal_${booking._id}`}
                                                     className="btn btn-primary"
