@@ -2,6 +2,7 @@
 
 import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
+import Image from 'next/image';
 import { notFound, useParams } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -64,11 +65,15 @@ const BookingPage = () => {
         <div className="w-[99vw] my-1 mx-auto  flex-col bg-white rounded-md  ">
             {/* Room Image */}
             <div className="h-[490px] w-full">
-                <img
-                    src={roomBookingDetails.images?.main}
-                    alt={roomBookingDetails.title}
+                <Image
+                    src={roomBookingDetails.images?.main || '/fallback.jpg'} // Add fallback in case of undefined
+                    alt={roomBookingDetails.title || 'Room image'}
+                    width={800} // Set a fixed width (or use responsive layout)
+                    height={600} // Set a fixed height
                     className="w-full h-full object-cover object-center rounded-t-md"
+                    priority 
                 />
+
             </div>
 
             {/* Room Details */}

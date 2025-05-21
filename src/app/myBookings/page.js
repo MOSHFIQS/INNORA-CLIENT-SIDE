@@ -2,6 +2,7 @@
 import PrivateRoute from '@/privateRoute/PrivateRoute';
 import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -77,10 +78,12 @@ const MyBookings = () => {
                             key={booking._id}
                             className="relative group bg-white/80 dark:bg-gray-800/60 backdrop-blur-xl border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden  transition-transform duration-300 hover:scale-[1]"
                         >
-                            <img
-                                src={booking.image}
-                                alt={booking.title}
-                                className="w-full h-52 object-cover object-center transition duration-300 group-hover:scale-105"
+                            <Image
+                                src={booking.image || '/fallback.jpg'} // Provide fallback if needed
+                                alt={booking.title || 'Booking image'}
+                                fill
+                                className="object-cover object-center transition duration-300 group-hover:scale-105"
+                                unoptimized={booking.image?.startsWith('http')}
                             />
                             <div className="p-6 space-y-3 flex justify-center flex-col items-center">
                                 <h3 className="text-xl font-bold text-gray-800 dark:text-white">{booking.title}</h3>

@@ -21,6 +21,7 @@ import {
     XCircle,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const iconMap = {
     "WiFi": Wifi,
@@ -73,10 +74,13 @@ const Page = () => {
         <div className=" bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 uppercase">
             {/* Hero Section */}
             <div className="relative w-full h-[80vh] overflow-hidden">
-                <img
-                    src={room.images?.main}
-                    alt={room.title}
+                <Image
+                    src={room.images?.main || '/fallback.jpg'}
+                    alt={room.title || 'Room Image'}
+                    width={800}
+                    height={500}
                     className="object-cover w-full h-full scale-101 transition-transform duration-1000 ease-in-out"
+                    unoptimized={room.images?.main?.startsWith('http')}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute top-6 left-6 bg-white/80 text-gray-800 px-4 py-1 rounded-full text-sm font-semibold">
