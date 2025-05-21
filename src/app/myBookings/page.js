@@ -69,14 +69,6 @@ const MyBookings = () => {
     };
 
 
-    // if (!myBooking.length > 0) {
-    //     return (
-    //         <div className='h-full w-full flex justify-center '>
-    //             <h1 className=' md:text-3xl text-xl lg:text-4xl xl:text-6xl text-white font-extrabold'>SORRY YOU DON'T BOOK ANY ROOM</h1>
-    //         </div>
-    //     )
-    // }
-
     return (
         <PrivateRoute>
             <div className=" min-h-screen bg[#1c1c1c] uppercase">
@@ -132,11 +124,14 @@ const MyBookings = () => {
                                             <input
                                                 onChange={e => setNewDate(e.target.value)}
                                                 type="date"
+                                                
                                                 required
                                                 className="input input-bordered w-full my-4"
+                                                min={new Date().toISOString().split("T")[0]} // ekhane min date set kora hocche ajker date
                                             />
+
                                             <div className="modal-action">
-                                                <label htmlFor={`update_modal_${booking._id}`} className="btn">Cancel</label>
+                                                <label htmlFor={`update_modal_${booking._id}`}  className="btn">Cancel</label>
                                                 <label
                                                     htmlFor={`update_modal_${booking._id}`}
                                                     className="btn btn-primary"

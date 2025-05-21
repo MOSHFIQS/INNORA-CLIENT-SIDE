@@ -5,8 +5,8 @@ import { BsSend } from "react-icons/bs";
 const Footer = () => {
     return (
         <div className=''>
-            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed bg-[url('/slider1.jpg')] text-black  bg-[#b99d75] cormorant">
-                <div className=" bg-white/10 backdrop-blur-xl grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 place-items-start justify-items-center gap-8 h-full w-full p-10 rounded-lg">
+            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed  text-black  bg-[#b99d75] cormorant">
+                <div className=" grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 place-items-start justify-items-center gap-8 h-full w-full p-10 rounded-lg">
                     <aside className="flex flex-col items-center md:items-start  gap-4">
                         <div className='flex items-center'>
                             {/* <img src='/logo.png' draggable={false} className="w-16 hover:scale-105 duration-300 " alt="" /> */}
@@ -59,7 +59,7 @@ const Footer = () => {
                 </div>
             </footer>
             <hr />
-            <div className='flex lg:flex-row flex-col  items-center  justify-between gap-2 lg:gap-10 px-10 py-4 bg-[#c0a783] text-black'>
+            <div className='flex lg:flex-row flex-col  items-center  justify-between gap-2 lg:gap-10 px-10 py-4 bg-[#b99d75] text-black'>
                 <h5 className='font-bold text-lg hover:text-white text-center'>© 2025  INNORA. All Rights Reserved.</h5>
                 <img src="https://wdttaza.wpengine.com/wp-content/uploads/2024/11/payment-img.png" className='object-contain' alt="" />
                 <div className='flex gap-2 '>

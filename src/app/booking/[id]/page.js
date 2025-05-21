@@ -32,7 +32,7 @@ const BookingPage = () => {
         const image = roomBookingDetails.images.main
         const title = roomBookingDetails.title
         const date = e.target.date.value
-        const userEmail = user.email
+        const userEmail = user?.email
         const bookingDetails = {
             price, roomId, image, date, title, userEmail
         }

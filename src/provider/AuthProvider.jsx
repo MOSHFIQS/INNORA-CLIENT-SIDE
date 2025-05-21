@@ -44,13 +44,13 @@ const AuthProvider = ({ children }) => {
                 const loggedUser = { email: currentUser?.email };
                 console.log(user, currentUser)
                 axios
-                    .post('http://localhost:5000/jwt', loggedUser, { withCredentials: true })
+                    .post(`${process.env.NEXT_PUBLIC_BASE_URL}/jwt`, loggedUser, { withCredentials: true })
                     .then(res => console.log('Token response:', res.data))
                     .catch(err => console.error('JWT request error:', err));
                 setLoading(false);
             } else {
                 axios
-                    .post('http://localhost:5000/logout', {},{ withCredentials: true })
+                    .post(`${process.env.NEXT_PUBLIC_BASE_URL}/logout`, {},{ withCredentials: true })
                     .then(res => console.log('Logout response:', res.data))
                     .catch(err => console.error('Logout request error:', err));
                 setLoading(false);
