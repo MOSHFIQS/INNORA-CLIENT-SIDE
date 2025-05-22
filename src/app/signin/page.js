@@ -49,30 +49,30 @@ const Page = () => {
         // sign in
         <div>
             <div className="flex flex-col items-center justify-center h-screen ">
-                <div className="w-full max-w-md  shadow p-6 border border-gray-300 bg-[#c0a783]">
-                    <h2 className="text-2xl  font-semibold  mb-4 text-center uppercase text-white">SignIn to INNORA</h2>
+                <div className="w-full max-w-md  shadow p-6 border border-gray-300  dark:bg-[#c0a783] md:hover:scale-150 transition-all duration-700 ease-in-out">
+                    <h2 className="text-2xl  font-semibold  mb-4 text-center uppercase dark:text-white">SignIn to INNORA</h2>
                     <form onSubmit={handleSignIn} className="flex flex-col gap-2">
                         <input
                             placeholder="Email address"
-                            className="bg-transparent p-3 border-black border hover:border-white w-full"
+                            className="bg-transparent p-3 border-black border dark:hover:border-white w-full"
                             type="email"
                             name='email'
                         />
                         <input
                             placeholder="Password"
-                            className="bg-transparent p-3 border-black border hover:border-white w-full"
+                            className="bg-transparent p-3 border-black border dark:hover:border-white w-full"
                             type="password"
                             name='password'
                         />
                         <div className='w-full'>
                             <button
-                                className="bg-black border w-full py-2 border-white text-white uppercase hover:bg-white hover:text-black hover:border-black font-extrabold"
+                                className="bg-black border w-full py-2 border-white text-white uppercase dark:hover:bg-white dark:hover:text-black dark:hover:border-black font-extrabold"
                                 type="submit"
                             >
                                 SignIn
                             </button>
-                            <p className="mt-4 text-center w-full hover:text-white">
-                                Dont have an account? <Link href={'/signup'} className='text-black   hover:text-white'>SignUp</Link>
+                            <p className="mt-4 text-center w-full dark:hover:text-white">
+                                Dont have an account? <Link href={'/signup'} className='text-black   dark:hover:text-white'>SignUp</Link>
                             </p>
                         </div>
                         <div className="divider text-white my-0">OR</div>

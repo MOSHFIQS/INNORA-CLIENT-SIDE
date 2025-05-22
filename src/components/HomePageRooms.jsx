@@ -62,16 +62,16 @@ function HomePageRooms() {
 
 
     return (
-        <div className="py-10 space-y-10 bg-[#1c1c1c]">
+        <div className="pt-10 space-y-10 bg-white dark:text-white dark:bg-[#1c1c1c] ">
             <div className="text-center  ">
-                <h1 className="text-white font-extrabold text-5xl">EXPLORE YOUR ROOM</h1>
-                <h1 className="text-white font-extrabold text-3xl">Find Rooms Based On Interests</h1>
+                <h1 className=" font-extrabold text-5xl">EXPLORE YOUR ROOM</h1>
+                <h1 className=" font-extrabold text-3xl">Find Rooms Based On Interests</h1>
             </div>
-            <div className="w-full  overflow-x-hidden bg-[#1c1c1c]">
+            <div className="w-full  overflow-x-hidden dark:bg-[#1c1c1c]">
                 <Slider {...settings}>
                     {allRooms.slice(0, 5).map((room, idx) => (
                         <div key={idx} className="px-3">
-                            <div className="relative group overflow-hidden  border-4  border-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform ">
+                            <div className="relative group overflow-hidden  border-4  dark:border-white dark:bg-gray-700  dark:text-gray-100 transition-transform duration-500 transform ">
                                 <img
                                     src={room.images.main}
                                     className="object-cover w-full h-80 md:h-[30vw] lg:h-[20vw] xl:h-[15vw]  transition-transform duration-500 transform hover:scale-102"
@@ -81,10 +81,10 @@ function HomePageRooms() {
                                     Room #{room.roomNumber}
                                 </div>
                                 <div className="p-5 space-y-4">
-                                    <h3 className="text-xl font-extrabold uppercase tracking-wide text-center">
+                                    <h3 className="text-xl font-extrabold uppercase tracking-wide text-center dark:text-white">
                                         {room.title}
                                     </h3>
-                                    <div className="flex items-center justify-center gap-4 text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <div className="flex items-center justify-center gap-4 text-sm font-medium dark:text-white">
                                         <span className="flex items-center gap-1">
                                             <Users className="w-4 h-4" /> {room.maxGuests} Guests
                                         </span>
@@ -95,7 +95,7 @@ function HomePageRooms() {
                                     <div className="flex justify-center">
                                         <button
                                             onClick={() => router.push(`/roomDetails/${room._id}`)}
-                                            className="relative text-xs xl:text-sm uppercase after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full hover:translate-x-[0%]">view details</button>
+                                            className="dark:text-white  relative text-xs xl:text-sm uppercase after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 dark:after:bg-white after:bg-black after:transition-all after:duration-300 hover:after:w-full hover:translate-x-[0%]">view details</button>
                                     </div>
                                 </div>
                             </div>

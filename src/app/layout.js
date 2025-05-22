@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
             reverseOrder={false}
           />
           <Navbar />
-          <div className="flex   flex-col bg-[#1c1c1c]">
+          <div className="flex   flex-col  bg-white dark:bg-[#1c1c1c]">
             <ScrollToTopButton />
             {children}
           </div>

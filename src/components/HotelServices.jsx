@@ -67,14 +67,14 @@ const services = [
 
 export default function HotelServices() {
     return (
-        <div className="bg-gray-700 flex items-center justify-center flex-col space-y-16 py-16">
-            <h1 className=" text-4xl md:text-5xl font-extrabold  text-white text-center uppercase ">Stay in Luxury with Top-Rated Amenities</h1>
-            <section className="bg-gray-700 text-white  px-6 md:px-20">
+        <div className="dark:bg-gray-700 bg-white flex items-center justify-center flex-col space-y-16 py-16">
+            <h1 className=" text-4xl md:text-5xl font-extrabold  dark:text-white text-center uppercase ">Stay in Luxury with Top-Rated Amenities</h1>
+            <section className="dark:bg-gray-700   px-6 md:px-20">
                 <div className="grid gap-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className={`flex gap-5 items-center hover:bg-gray-500 px-5 py-3 border border-transparent hover:border-white overflow-hidden bg-gray-600 transition-all duration-300`}
+                            className={`flex gap-5 items-center hover:bg-gray-300 dark:hover:bg-gray-500 px-5 py-3 border border-transparent hover:border-white overflow-hidden bg-gray-200 dark:bg-gray-600 transition-all duration-300`}
                         >
                             <img
                                 src={service.image}
@@ -82,8 +82,8 @@ export default function HotelServices() {
                                 className="min-w-[40px] h-[40px] object-contain"
                             />
                             <div>
-                                <h3 className="text-xl font-semibold mb-1">{service.title}</h3>
-                                <p className="text-sm leading-relaxed text-gray-300">{service.description}</p>
+                                <h3 className="text-xl font-semibold mb-1 dark:text-white">{service.title}</h3>
+                                <p className="text-sm leading-relaxed dark:text-gray-300">{service.description}</p>
                             </div>
                         </div>
                     ))}

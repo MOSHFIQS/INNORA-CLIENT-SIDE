@@ -4,7 +4,7 @@ import Loading from '@/app/loading';
 import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
 import Image from 'next/image';
-import { notFound, useParams } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
@@ -13,6 +13,7 @@ const BookingPage = () => {
     const { user } = useContext(AuthContext)
     const [loading, setLoading] = useState(true);
     const [roomBookingDetails, setRoomBookingDetails] = useState(null);
+    const router = useRouter()
 
 
     useEffect(() => {
@@ -41,6 +42,8 @@ const BookingPage = () => {
         axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings`, bookingDetails)
             .then(res => {
                 toast.success('BOOKING SUCCESSFUL');
+                router.push('/myBookings')
+                
             })
             .catch(err => {
                 if (err.response?.data?.message === 'User already booked for this date') {

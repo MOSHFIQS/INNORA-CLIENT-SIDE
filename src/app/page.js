@@ -1,7 +1,5 @@
-
 import Banner from '@/components/Banner'
 import HomePageRooms from '@/components/HomePageRooms'
-import HotelMap from '@/components/HotelMap'
 import HotelServices from '@/components/HotelServices'
 import React from 'react'
 
@@ -13,9 +11,8 @@ const page = () => {
 
       <Banner />
       <HomePageRooms />
-      <HotelMap />
       <HotelServices />
-      
+
     </div>
   )
 }

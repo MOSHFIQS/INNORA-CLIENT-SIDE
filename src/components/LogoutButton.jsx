@@ -1,5 +1,6 @@
 'use client'
 import { AuthContext } from '@/provider/AuthProvider';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useContext } from 'react';
 
@@ -11,9 +12,9 @@ const LogoutButton = () => {
         router.push('/')
     }
     return (
-        <button className='dark:text-white' onClick={handleLogout}>
+        <Link href={'/'} className='dark:text-white ' onClick={handleLogout}>
             Logout
-        </button>
+        </Link>
     );
 };
 

@@ -79,8 +79,8 @@ const MyBookings = () => {
 
     return (
         <PrivateRoute>
-            <div className=" min-h-screen bg[#1c1c1c] uppercase">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold my-5 md:my-14 text-center text-gray-900 dark:text-white whitespace-nowrap">
+            <div className="  bg[#1c1c1c] uppercase py-14 border">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold my-5 mb-14 text-center text-gray-900 dark:text-white whitespace-nowrap">
                     My Bookings
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
@@ -107,7 +107,7 @@ const MyBookings = () => {
                                 <div className="pt-4 flex justify-center items-center gap-1">
                                     <button
                                         onClick={() => handleCancel(booking.roomId, booking.date)}
-                                        className="btn btn-sm btn-error text-white"
+                                        className="btn btn-sm rounded-none btn-error text-white"
                                     >
                                         ✖️ Cancel
                                     </button>
@@ -122,7 +122,7 @@ const MyBookings = () => {
                                     {/* this is modal part */}
 
                                     {/* The button to open modal */}
-                                    <label htmlFor={`update_modal_${booking._id}`} className="btn btn-sm btn-info text-white">
+                                    <label htmlFor={`update_modal_${booking._id}`} className="btn btn-sm rounded-none btn-info text-white">
                                         🗓️ Update Date
                                     </label>
 
@@ -155,14 +155,14 @@ const MyBookings = () => {
 
                                     <button
                                         onClick={() => router.push(`/review/${booking.roomId}`)}
-                                        className="btn btn-sm btn-accent text-white"
+                                        className="btn rounded-none btn-sm btn-accent text-white"
                                     >
                                         ⭐ Review
                                     </button>
                                 </div>
                             </div>
                             {/* Accent glow effect */}
-                            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-400 to-pink-400 blur-2xl opacity-10 group-hover:opacity-20 transition pointer-events-none rounded-3xl" />
+                            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-300 to-pink-300 blur-2xl opacity-10 group-hover:opacity-15 transition pointer-events-none rounded-3xl" />
                         </div>
                     ))}
                 </div>
