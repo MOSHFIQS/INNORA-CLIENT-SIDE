@@ -74,7 +74,7 @@ export default function HotelServices() {
                     {services.map((service, index) => (
                         <div
                             key={index}
-                            className={`flex gap-5  items-center  hover:bg-gray-500 rounded-lg px-5 py-4 bg-gray-600`}
+                            className={`flex gap-5 items-center hover:bg-gray-500 px-5 py-3 border border-transparent hover:border-white overflow-hidden bg-gray-600 transition-all duration-300`}
                         >
                             <img
                                 src={service.image}

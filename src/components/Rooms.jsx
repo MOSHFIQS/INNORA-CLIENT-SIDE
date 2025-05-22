@@ -20,12 +20,12 @@ const Rooms = () => {
 
 
     return (
-        <div className="p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 bg-[#1c1c1c]">
+        <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-[#1c1c1c]">
             {allRooms.map((room) => (
                 <div
                     key={room._id}
                     onClick={() => router.push(`/roomDetails/${room._id}`)}
-                    className="bg-[#c0a783] rounded-md border border-gray-200 shadow cursor-pointer hover:scale-101 transition duration-300"
+                    className="bg-[#c0a783]  border border-gray-200 shadow cursor-pointer hover:scale-101 transition duration-300"
                 >
                     <img
                         src={room.images?.main}

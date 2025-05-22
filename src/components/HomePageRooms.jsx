@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Users, Eye } from "lucide-react";
 import { AuthContext } from "@/provider/AuthProvider";
+import Loading from "@/app/loading";
 
 function HomePageRooms() {
     const {user,loading} = useContext(AuthContext)
@@ -55,9 +56,7 @@ function HomePageRooms() {
     };
 
     if(loading){
-        return <div className="text-white text-4xl h-screen w-screen flex items-center justify-center">
-            loading
-        </div>
+        return <Loading />
     }
     
 
@@ -71,10 +70,10 @@ function HomePageRooms() {
                 <Slider {...settings}>
                     {allRooms.slice(0,5).map((room, idx) => (
                         <div key={idx} className="px-3">
-                            <div className="relative group overflow-hidden rounded-md border-4  border-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform ">
+                            <div className="relative group overflow-hidden  border-4  border-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform ">
                                 <img
                                     src={room.images.main}
-                                    className="object-cover w-full h-80 md:h-[30vw] lg:h-[20vw] xl:h-[15vw] rounded-t-md transition-transform duration-500 transform hover:scale-102"
+                                    className="object-cover w-full h-80 md:h-[30vw] lg:h-[20vw] xl:h-[15vw]  transition-transform duration-500 transform hover:scale-102"
                                     alt={room.title}
                                 />
                                 <div className="absolute top-6 left-3 bg-white/80 text-gray-800 text-xs font-semibold px-2 py-1 rounded shadow">
