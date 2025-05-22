@@ -12,17 +12,18 @@ import { AuthContext } from "@/provider/AuthProvider";
 import Loading from "@/app/loading";
 
 function HomePageRooms() {
-    const {user,loading} = useContext(AuthContext)
+    const { user, loading } = useContext(AuthContext)
     const [allRooms, setAllRooms] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
+        if (!user?.email) return
         axios
             .get(`${process.env.NEXT_PUBLIC_BASE_URL}/homePageRooms`)
             .then((response) => setAllRooms(response.data))
-            .catch(() => toast.error("Failed to fetch rooms data"));
+            .catch(() => toast.error("Failed to fetch home page rooms data"));
     }, [user]);
-    
+
 
     const settings = {
         className: "center",
@@ -55,20 +56,20 @@ function HomePageRooms() {
         ],
     };
 
-    if(loading){
+    if (loading) {
         return <Loading />
     }
-    
+
 
     return (
         <div className="py-10 space-y-10 bg-[#1c1c1c]">
-           <div className="text-center  ">
+            <div className="text-center  ">
                 <h1 className="text-white font-extrabold text-5xl">EXPLORE YOUR ROOM</h1>
                 <h1 className="text-white font-extrabold text-3xl">Find Rooms Based On Interests</h1>
-           </div>
+            </div>
             <div className="w-full  overflow-x-hidden bg-[#1c1c1c]">
                 <Slider {...settings}>
-                    {allRooms.slice(0,5).map((room, idx) => (
+                    {allRooms.slice(0, 5).map((room, idx) => (
                         <div key={idx} className="px-3">
                             <div className="relative group overflow-hidden  border-4  border-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 transition-transform duration-500 transform ">
                                 <img
