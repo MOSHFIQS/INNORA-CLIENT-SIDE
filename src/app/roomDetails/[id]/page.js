@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Loading from "@/app/loading";
 
 const iconMap = {
     "WiFi": Wifi,
@@ -59,8 +60,8 @@ const Page = () => {
 
 
     if (loading)
-        return <div className="p-10 text-center text-gray-500">Loading...</div>;
-    
+        return <Loading />
+
     if (!room || id !== room._id) return notFound()
 
 

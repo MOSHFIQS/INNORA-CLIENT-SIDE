@@ -1,5 +1,6 @@
 'use client'
 
+import Loading from '@/app/loading';
 import { AuthContext } from '@/provider/AuthProvider';
 import axios from 'axios';
 import Image from 'next/image';
@@ -56,34 +57,35 @@ const BookingPage = () => {
     };
 
     if (loading)
-        return <div className="p-10 text-center text-gray-500">Loading...</div>;
+        return <Loading />
     if (!roomBookingDetails || id !== roomBookingDetails._id) return notFound();
 
 
 
     return (
-        <div className="w-[99vw] my-1 mx-auto  flex-col bg-white rounded-md  ">
+        <div className="w-full  mx-auto  flex-col bg-gray-800 text-white   ">
             {/* Room Image */}
-            <div className="h-[490px] w-full">
+            <div className="h-[550px] w-full">
                 <Image
-                    src={roomBookingDetails.images?.main || '/fallback.jpg'} // Add fallback in case of undefined
+                    src={roomBookingDetails.images?.main || '/fallback.jpg'}
                     alt={roomBookingDetails.title || 'Room image'}
-                    width={800} // Set a fixed width (or use responsive layout)
-                    height={600} // Set a fixed height
-                    className="w-full h-full object-cover object-center rounded-t-md"
-                    priority 
+                    width={800}
+                    height={600}
+                    className="w-full h-full object-cover object-center"
+                    priority
                 />
+
 
             </div>
 
             {/* Room Details */}
             <form onSubmit={handleBooking} className="p-6 space-y-6 uppercase">
                 <div>
-                    <h1 className="text-3xl font-bold text-gray-800">{roomBookingDetails.title}</h1>
-                    <p className="text-gray-500 mt-1">{roomBookingDetails.shortDescription}</p>
+                    <h1 className="text-3xl font-bold ">{roomBookingDetails.title}</h1>
+                    <p className="mt-1">{roomBookingDetails.shortDescription}</p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 text-gray-700">
+                <div className="grid grid-cols-2 gap-4">
                     <p><span className="font-semibold">Room ID:</span> {roomBookingDetails.roomId}</p>
                     <p><span className="font-semibold">Room Number:</span> {roomBookingDetails.roomNumber}</p>
                     <p><span className="font-semibold">Price/Night:</span> {roomBookingDetails.currency} {roomBookingDetails.pricePerNight}</p>
@@ -92,23 +94,23 @@ const BookingPage = () => {
 
                 {/* Date Picker */}
                 <div >
-                    <label htmlFor="bookingDate" className="block mb-2 text-sm font-medium text-gray-600">
+                    <label htmlFor="bookingDate" className="block mb-2 text-sm font-medium ">
                         Select Booking Date
                     </label>
                     <input
                         type="date"
                         id="bookingDate"
+                        name="date"
                         required
-                        name='date'
-                        className="w-full border border-gray-300 p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        className="w-full border border-gray-300 p-2 hover:border-white bg-[#b99d75] focus:outline-0"
+                        min={new Date().toISOString().split("T")[0]}
                     />
                 </div>
 
                 {/* Book Button */}
                 <div>
                     <button type='submit'
-
-                        className="w-full btn btn-md bg-[#1a77f2] text-white font-bold uppercase"
+                        className="w-full btn rounded-none  bg-[#b99d75] hover:scale-101 duration-500 transition-all ease-in-out hover:text-white font-bold uppercase"
                     >
                         Book Now
                     </button>

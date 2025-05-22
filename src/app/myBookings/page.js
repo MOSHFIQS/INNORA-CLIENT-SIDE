@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
+
+
 const MyBookings = () => {
     const { user } = useContext(AuthContext);
     const [myBooking, setMyBooking] = useState([]);
@@ -14,10 +16,11 @@ const MyBookings = () => {
     const router = useRouter()
 
     useEffect(() => {
-        if (!user?.email) return
-        axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings?email=${user?.email}`, { withCredentials: true })
-            .then(response => setMyBooking(response.data))
-            .catch(error => toast.error('failed to set my bookings'));
+        if (user?.email) {
+            axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings?email=${user?.email}`, { withCredentials: true })
+                .then(response => setMyBooking(response.data))
+                .catch(error => toast.error('failed to set my bookings'));
+        }
     }, [user]);
 
     const handleCancel = (roomId, date) => {
@@ -65,7 +68,7 @@ const MyBookings = () => {
             })
     };
 
-    if (!myBooking.length > 0){
+    if (!myBooking.length > 0) {
         return (
             <div className='flex items-center justify-center h-screen w-screen text-center text-5xl text-[#b99d75]'>
                 <h1>You should booked a room first</h1>

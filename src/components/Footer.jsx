@@ -7,13 +7,13 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 const Footer = () => {
     return (
         <div className="">
-            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed text-black bg-[#b99d75] cormorant py-10">
+            <footer className="bg-cover bg-no-repeat text-center md:text-start bg-fixed text-black bg-[#b99d75] cormorant hover:py-10 transition-all duration-700 ease-in-out">
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7 place-items-start justify-items-center gap-8 h-full w-full p-10 rounded-lg">
 
                     {/* Company Info */}
                     <aside className="flex flex-col items-center md:items-start xl:col-span-2 gap-7">
                         <div className='flex items-center'>
-                            <p className="hover:text-white text-3xl font-extrabold font-mono">
+                            <p className="hover:text-white text-3xl font-extrabold playwrite">
                                 [ INNORA LIMITED ]
                             </p>
                         </div>

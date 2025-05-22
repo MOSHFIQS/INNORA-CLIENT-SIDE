@@ -11,11 +11,11 @@ const Rooms = () => {
     const router = useRouter();
 
     useEffect(() => {
-        if (!user?.email) return; 
-        axios
-            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms?email=${user.email}`, { withCredentials: true })
-            .then((response) => setAllRooms(response.data))
-            .catch(() => toast.error("Failed to fetch all Rooms data"));
+        if (user?.email) {
+            axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/rooms?email=${user.email}`, { withCredentials: true })
+                .then((response) => setAllRooms(response.data))
+                .catch(() => toast.error("Failed to fetch all Rooms data"));
+        }
     }, [user]);
 
 

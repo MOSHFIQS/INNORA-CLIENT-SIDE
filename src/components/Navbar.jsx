@@ -9,7 +9,8 @@ const Navbar = () => {
   const {user} = useContext(AuthContext)
   
   return (
-    <div className="navbar border border-gray-300 dark:bg-[#1c1c1c] bg-white dark:text-white text-black relative">
+    <div className="navbar  dark:bg-[#b99d75] bg-white dark:text-white text-black relative h-20 hover:h-24 transition-all duration-700 ease-in-out"
+>
       <div className="navbar-start gap-2">
         <div className="dropdown">
           <div tabIndex={0} role="button" className=" w-10 flex items-center justify-center  lg:hidden">
@@ -17,7 +18,7 @@ const Navbar = () => {
           </div>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content bg-gray-900  border-white z-1 mt-[19px] -left-[9px] w-52 p-2 shadow">
+            className="menu menu-sm dropdown-content dark:bg-[#b99d75] border-white z-1 mt-[25px] -left-[8px] w-52 p-2 ">
             <li><Link href={'/'}>Home</Link></li>
             <li><Link href={'/rooms'}>Rooms</Link></li>
             {
@@ -34,7 +35,7 @@ const Navbar = () => {
             }
           </ul>
         </div>
-        <Link href={'/'} className="text-2xl font-extrabold">INNORA</Link>
+        <Link href={'/'} className="text-2xl font-extrabold playwrite">INNORA</Link>
       </div>
       <div className="navbar-center hidden lg:flex uppercase">
         <ul className="menu menu-horizontal px-1 gap-4">

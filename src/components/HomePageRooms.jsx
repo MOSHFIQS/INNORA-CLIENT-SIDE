@@ -12,17 +12,17 @@ import { AuthContext } from "@/provider/AuthProvider";
 import Loading from "@/app/loading";
 
 function HomePageRooms() {
-    const { user, loading } = useContext(AuthContext)
+    const { loading } = useContext(AuthContext)
     const [allRooms, setAllRooms] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
-        if (!user?.email) return
+
         axios
             .get(`${process.env.NEXT_PUBLIC_BASE_URL}/homePageRooms`)
             .then((response) => setAllRooms(response.data))
             .catch(() => toast.error("Failed to fetch home page rooms data"));
-    }, [user]);
+    }, []);
 
 
     const settings = {
