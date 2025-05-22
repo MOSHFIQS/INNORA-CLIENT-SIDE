@@ -57,9 +57,11 @@ const Page = () => {
             .catch(() => setLoading(false));
     }, [id]);
 
+
     if (loading)
         return <div className="p-10 text-center text-gray-500">Loading...</div>;
-    if (!room || id !== room._id) return notFound();
+    
+    if (!room || id !== room._id) return notFound()
 
 
 
@@ -155,7 +157,7 @@ const Page = () => {
                     </div>
 
 
-                    
+
 
 
                 </motion.div>

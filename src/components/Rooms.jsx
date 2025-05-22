@@ -30,7 +30,7 @@ const Rooms = () => {
                     <img
                         src={room.images?.main}
                         alt={room.title}
-                        className="h-48 w-full object-cover rounded-t-md "
+                        className="h-48 w-full object-cover  "
                     />
                     <div className="p-4">
                         <h3 className="text-lg font-semibold text-gray-800 hover:text-white">{room.title}</h3>

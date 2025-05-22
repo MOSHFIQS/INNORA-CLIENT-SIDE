@@ -65,6 +65,14 @@ const MyBookings = () => {
             })
     };
 
+    if (!myBooking.length > 0){
+        return (
+            <div className='flex items-center justify-center h-screen w-screen text-center text-5xl text-[#b99d75]'>
+                <h1>You should booked a room first</h1>
+            </div>
+        )
+    }
+
 
     return (
         <PrivateRoute>

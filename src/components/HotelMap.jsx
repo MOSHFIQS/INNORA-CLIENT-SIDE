@@ -12,8 +12,8 @@ const HotelMap = () => {
             </div>
 
             {/* Info + Map Section */}
-            <div className="w-full relative flex flex-col lg:flex-row items-center justify-center gap-5 px-0.5 lg:px-5 py-2 bg-black text-white rounded-b">
-                <div className="w-full h-96 md:h-[600px] lg:h-[700px] shadow-lg overflow-hidden border-4 border-white">
+            <div className="w-full relative flex flex-col lg:flex-row items-center justify-center gap-5  py-2 bg-black text-white rounded-b">
+                <div className="w-full h-96 md:h-[600px] lg:h-[700px] shadow-lg overflow-hidden border-4 p-2 border-[#b99d75]">
                     <iframe
                         title="Sea Pearl Beach Resort Satellite Map"
                         className="w-full h-full"
