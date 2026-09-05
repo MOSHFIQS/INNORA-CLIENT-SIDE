@@ -72,7 +72,7 @@ export default function CreateBannerPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title="Add Hero Banner Slide"
                     description="Craft high-impact promotional carousel slides and call-to-actions for the homepage."

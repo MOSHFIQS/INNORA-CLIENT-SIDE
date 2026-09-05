@@ -108,7 +108,7 @@ export default function EditUserPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title={`Edit User: ${formData.firstName} ${formData.lastName}`}
                     description="Update account profile coordinates, role permissions, and active status."

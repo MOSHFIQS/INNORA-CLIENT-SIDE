@@ -99,7 +99,7 @@ export default function EditBannerPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title={`Edit Slide: ${formData.title || 'Banner'}`}
                     description="Update promotional slide text, visual image background, and link destination."

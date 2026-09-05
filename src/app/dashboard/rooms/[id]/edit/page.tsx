@@ -197,7 +197,7 @@ export default function EditRoomPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-5xl">
+          <div className="space-y-6 max-w-5xl mx-auto">
                <PageHeader
                     title={`Edit Suite: ${formData.title || 'Suite #' + formData.roomNumber}`}
                     description="Modify room specs, nightly rates, image assets, and live booking availability."

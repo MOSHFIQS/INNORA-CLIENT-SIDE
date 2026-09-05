@@ -44,7 +44,7 @@ export default function UserDetailPage() {
      const avatar = user.avatarUrl || user.avatar;
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title={`User Dossier: ${name}`}
                     description={`ID: ${user.id} • Registered Member`}

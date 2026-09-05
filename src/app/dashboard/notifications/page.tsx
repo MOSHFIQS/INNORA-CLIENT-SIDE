@@ -49,7 +49,7 @@ export default function NotificationsPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title="Notification Center"
                     description="Live alerts, reservation confirmations, inquiry updates, and hotel announcements."

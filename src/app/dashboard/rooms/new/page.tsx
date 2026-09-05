@@ -158,7 +158,7 @@ export default function CreateRoomPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-5xl">
+          <div className="space-y-6 max-w-5xl mx-auto">
                <PageHeader
                     title="Register New Luxury Suite"
                     description="Configure suite inventory, pricing structure, bespoke amenities, and high-resolution visual assets."

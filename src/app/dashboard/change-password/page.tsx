@@ -44,7 +44,7 @@ export default function ChangePasswordPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-xl">
+          <div className="space-y-6 max-w-xl mx-auto">
                <PageHeader
                     title="Account Password Security"
                     description="Protect your guest account credentials with modern encrypted authentication."

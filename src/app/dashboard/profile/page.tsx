@@ -83,7 +83,7 @@ export default function ProfileSettingsPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title="Profile & Security Settings"
                     description="Manage personal hospitality credentials, contact coordinates, avatar, and authentication security."

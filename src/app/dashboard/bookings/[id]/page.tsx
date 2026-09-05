@@ -53,7 +53,7 @@ export default function BookingDetailPage() {
      const amount = Number(booking.totalAmount || booking.price || 0);
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                {/* Non-printable Page Header */}
                <div className="print:hidden">
                     <PageHeader

@@ -50,7 +50,7 @@ export default function HotelSettingsPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-5xl">
+          <div className="space-y-6 max-w-5xl mx-auto">
                <PageHeader
                     title="Hotel Site Configuration"
                     description="Configure property contact information, check-in policies, tax rates, and brand identity."

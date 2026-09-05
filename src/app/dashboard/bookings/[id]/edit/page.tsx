@@ -121,7 +121,7 @@ export default function EditBookingPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title={`Manage Reservation #${booking.bookingNumber || booking.id?.slice(-8)}`}
                     description="Update scheduled stay dates, transition operational stay status, adjust folio pricing, and update guest records."

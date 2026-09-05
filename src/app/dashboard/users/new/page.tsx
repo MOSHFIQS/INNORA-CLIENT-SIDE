@@ -87,7 +87,7 @@ export default function CreateUserPage() {
      };
 
      return (
-          <div className="space-y-6 max-w-4xl">
+          <div className="space-y-6 max-w-4xl mx-auto">
                <PageHeader
                     title="Register Staff & User Account"
                     description="Provision administrative credentials, assign role-based access control, and configure staff profiles."
