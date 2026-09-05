@@ -1,21 +1,32 @@
-'use client'
-import { AuthContext } from '@/provider/AuthProvider';
-import Link from 'next/link';
+'use client';
+
+import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import React, { useContext } from 'react';
+import React from 'react';
+import toast from 'react-hot-toast';
 
 const LogoutButton = () => {
-    const { logOutUser } = useContext(AuthContext)
-    const router = useRouter()
-    const handleLogout = () => {
-        logOutUser()
-        router.push('/')
-    }
-    return (
-        <Link href={'/'} className='dark:text-white ' onClick={handleLogout}>
-            Logout
-        </Link>
-    );
+     const { logout } = useAuth();
+     const router = useRouter();
+
+     const handleLogout = async () => {
+          try {
+               await logout();
+               toast.success('Logged out successfully');
+               router.push('/');
+          } catch (e) {
+               toast.error('Logout failed');
+          }
+     };
+
+     return (
+          <button
+               onClick={handleLogout}
+               className="text-left dark:text-white hover:text-[#c0a783] transition-colors cursor-pointer uppercase font-semibold"
+          >
+               Logout
+          </button>
+     );
 };
 
 export default LogoutButton;

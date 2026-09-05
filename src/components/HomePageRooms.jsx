@@ -1,110 +1,114 @@
 'use client';
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { Users, Eye } from "lucide-react";
-import { AuthContext } from "@/provider/AuthProvider";
-import Loading from "@/app/loading";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { useRouter } from 'next/navigation';
+import { Users, Eye, Star } from 'lucide-react';
+import Loading from '@/app/loading';
+import { useGetHomePageRoomsQuery } from '@/redux/api/roomApi';
 
 function HomePageRooms() {
-    const { loading } = useContext(AuthContext)
-    const [allRooms, setAllRooms] = useState([]);
-    const router = useRouter();
+     const { data: allRooms = [], isLoading } = useGetHomePageRoomsQuery();
+     const router = useRouter();
 
-    useEffect(() => {
+     const settings = {
+          className: 'center',
+          infinite: allRooms.length > 3,
+          pauseOnHover: true,
+          autoplay: true,
+          autoplaySpeed: 2500,
+          centerPadding: '60px',
+          slidesToShow: 4,
+          speed: 600,
+          responsive: [
+               {
+                    breakpoint: 1280,
+                    settings: {
+                         slidesToShow: 3,
+                    },
+               },
+               {
+                    breakpoint: 1024,
+                    settings: {
+                         slidesToShow: 2,
+                    },
+               },
+               {
+                    breakpoint: 768,
+                    settings: {
+                         slidesToShow: 1,
+                    },
+               },
+          ],
+     };
 
-        axios
-            .get(`${process.env.NEXT_PUBLIC_BASE_URL}/homePageRooms`)
-            .then((response) => setAllRooms(response.data))
-            .catch(() => toast.error("Failed to fetch home page rooms data"));
-    }, []);
+     if (isLoading) {
+          return <Loading />;
+     }
 
-
-    const settings = {
-        className: "center",
-        infinite: true,
-        pauseOnHover: true,
-        autoplay: true,
-        autoplaySpeed: 2000,
-        centerPadding: "60px",
-        slidesToShow: 4, // default for xl
-        speed: 500,
-        responsive: [
-            {
-                breakpoint: 1280, // less than xl
-                settings: {
-                    slidesToShow: 3,
-                },
-            },
-            {
-                breakpoint: 1024, // less than lg
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 768, // less than md
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    };
-
-    if (loading) {
-        return <Loading />
-    }
-
-
-    return (
-        <div className="pt-10 space-y-10 bg-white dark:text-white dark:bg-[#1c1c1c] ">
-            <div className="text-center  ">
-                <h1 className=" font-extrabold text-5xl">EXPLORE YOUR ROOM</h1>
-                <h1 className=" font-extrabold text-3xl">Find Rooms Based On Interests</h1>
-            </div>
-            <div className="w-full  overflow-x-hidden dark:bg-[#1c1c1c]">
-                <Slider {...settings}>
-                    {allRooms.slice(0, 5).map((room, idx) => (
-                        <div key={idx} className="px-3">
-                            <div className="relative group overflow-hidden  border-4  dark:border-white dark:bg-gray-700  dark:text-gray-100 transition-transform duration-500 transform ">
-                                <img
-                                    src={room.images.main}
-                                    className="object-cover w-full h-80 md:h-[30vw] lg:h-[20vw] xl:h-[15vw]  transition-transform duration-500 transform hover:scale-102"
-                                    alt={room.title}
-                                />
-                                <div className="absolute top-6 left-3 bg-white/80 text-gray-800 text-xs font-semibold px-2 py-1 rounded shadow">
-                                    Room #{room.roomNumber}
-                                </div>
-                                <div className="p-5 space-y-4">
-                                    <h3 className="text-xl font-extrabold uppercase tracking-wide text-center dark:text-white">
-                                        {room.title}
-                                    </h3>
-                                    <div className="flex items-center justify-center gap-4 text-sm font-medium dark:text-white">
-                                        <span className="flex items-center gap-1">
-                                            <Users className="w-4 h-4" /> {room.maxGuests} Guests
-                                        </span>
-                                        <span className="flex items-center gap-1">
-                                            <Eye className="w-4 h-4" /> {room.view}
-                                        </span>
-                                    </div>
-                                    <div className="flex justify-center">
-                                        <button
-                                            onClick={() => router.push(`/roomDetails/${room._id}`)}
-                                            className="dark:text-white  relative text-xs xl:text-sm uppercase after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 dark:after:bg-white after:bg-black after:transition-all after:duration-300 hover:after:w-full hover:translate-x-[0%]">view details</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </Slider>
-            </div>
-        </div>
-    );
+     return (
+          <div className="pt-14 pb-8 space-y-10 bg-white dark:text-white dark:bg-[#1c1c1c]">
+               <div className="text-center space-y-2">
+                    <p className="text-xs uppercase font-bold tracking-widest text-[#b99d75]">Signature Accommodations</p>
+                    <h2 className="font-extrabold text-3xl md:text-5xl font-serif">EXPLORE YOUR ROOM</h2>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Discover curated luxury tailored for unforgettable stays</p>
+               </div>
+               <div className="w-full overflow-x-hidden dark:bg-[#1c1c1c] px-2 md:px-6">
+                    <Slider {...settings}>
+                         {allRooms.map((room) => (
+                              <div key={room.id || room._id} className="px-3">
+                                   <div className="relative group overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#202020] dark:text-gray-100 shadow-md hover:shadow-2xl transition-all duration-300">
+                                        <div className="overflow-hidden relative h-64 md:h-72">
+                                             <img
+                                                  src={room.images?.main || '/fallback.jpg'}
+                                                  className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                                                  alt={room.title}
+                                             />
+                                             <div className="absolute top-4 left-4 bg-black/75 text-white text-xs font-semibold px-2.5 py-1 uppercase tracking-wider backdrop-blur-sm">
+                                                  Room #{room.roomNumber}
+                                             </div>
+                                             <div className="absolute top-4 right-4 bg-[#b99d75] text-white text-xs font-bold px-2 py-1 flex items-center gap-1 shadow">
+                                                  <Star className="w-3 h-3 fill-white" /> {room.rating || '5.0'}
+                                             </div>
+                                             <div className="absolute bottom-4 right-4 bg-black/80 text-white text-sm font-bold px-3 py-1">
+                                                  ${room.pricePerNight} <span className="text-[10px] font-normal">/ night</span>
+                                             </div>
+                                        </div>
+                                        <div className="p-5 space-y-3">
+                                             <h3 className="text-lg font-bold uppercase tracking-wide truncate text-gray-900 dark:text-white">
+                                                  {room.title}
+                                             </h3>
+                                             <div className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 border-t border-b border-gray-100 dark:border-gray-800 py-2">
+                                                  <span className="flex items-center gap-1">
+                                                       <Users className="w-3.5 h-3.5 text-[#b99d75]" /> {room.maxGuests} Guests
+                                                  </span>
+                                                  <span className="flex items-center gap-1">
+                                                       <Eye className="w-3.5 h-3.5 text-[#b99d75]" /> {room.view} View
+                                                  </span>
+                                             </div>
+                                             <div className="pt-2 flex justify-between items-center">
+                                                  <button
+                                                       onClick={() => router.push(`/roomDetails/${room.id || room._id}`)}
+                                                       className="text-xs uppercase font-bold text-gray-900 dark:text-white hover:text-[#b99d75] transition-colors flex items-center gap-1 cursor-pointer"
+                                                  >
+                                                       View Details →
+                                                  </button>
+                                                  <button
+                                                       onClick={() => router.push(`/booking/${room.id || room._id}`)}
+                                                       className="btn btn-xs rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase text-[10px]"
+                                                  >
+                                                       Book Now
+                                                  </button>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                         ))}
+                    </Slider>
+               </div>
+          </div>
+     );
 }
 
 export default HomePageRooms;

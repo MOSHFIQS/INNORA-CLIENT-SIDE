@@ -1,77 +1,41 @@
-'use client'
-import auth from '@/firebase/firebase.config';
-import axios from 'axios';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
-import React, { createContext, useEffect, useState } from 'react';
+'use client';
 
-export const AuthContext = createContext(null)
+import React, { createContext } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 
-
+export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null)
-    const [loading, setLoading] = useState(true)
+     const { user, isLoading, login, register, logout } = useAuth();
 
+     const signInUser = async (email, password) => {
+          return await login({ email, password });
+     };
 
-    const signInUser = (email, password) => {
-        return signInWithEmailAndPassword(auth, email, password)
-    }
-    const signUpUser = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password)
-    }
-    const googleLogin = () => {
-        const provider = new GoogleAuthProvider();
-        return signInWithPopup(auth, provider)
-    }
-    // const githubLogin = () => {
-    //     const provider = new GithubAuthProvider();
-    //     return signInWithPopup(auth, provider)
-    // }
+     const signUpUser = async (email, password, firstName = 'Guest', lastName = 'User') => {
+          return await register({ email, password, firstName, lastName });
+     };
 
-    const updateProfileInfo = (name, photo) => {
-        return updateProfile(auth.currentUser, { displayName: name, photoURL: photo })
-    }
+     const logOutUser = async () => {
+          return await logout();
+     };
 
-    const logOutUser = () => {
-        return signOut(auth)
-    }
+     const authInfo = {
+          user: user
+               ? {
+                      ...user,
+                      displayName: user.fullName || `${user.firstName} ${user.lastName}`,
+                      photoURL: user.avatarUrl,
+                 }
+               : null,
+          signInUser,
+          signUpUser,
+          logOutUser,
+          loading: isLoading,
+          setLoading: () => {},
+     };
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-            setUser(currentUser);
-            if (currentUser?.email ) {
-                const loggedUser = { email: currentUser?.email };
-                axios
-                    .post(`${process.env.NEXT_PUBLIC_BASE_URL}/jwt`, loggedUser, { withCredentials: true })
-                    .then(res => console.log('Token response:', res.data))
-                    .catch(err => console.error('JWT request error:', err));
-                setLoading(false);
-            } else {
-                axios
-                    .post(`${process.env.NEXT_PUBLIC_BASE_URL}/logout`, {},{ withCredentials: true })
-                    .then(res => console.log('Logout response:', res.data))
-                    .catch(err => console.error('Logout request error:', err));
-                setLoading(false);
-            }
-            setLoading(false)
-        });
-
-        return () => {
-            if (unsubscribe) {
-                unsubscribe();
-            }
-        };
-    }, []);
-
-    const authInfo = {
-        user, setUser, signInUser, signUpUser, googleLogin, updateProfileInfo, logOutUser, loading, setLoading
-    }
-
-    return (
-        <AuthContext.Provider value={authInfo}>
-            {children}
-        </AuthContext.Provider>
-    );
+     return <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;

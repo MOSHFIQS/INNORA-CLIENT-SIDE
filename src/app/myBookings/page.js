@@ -1,174 +1,207 @@
-'use client'
+'use client';
+
 import PrivateRoute from '@/privateRoute/PrivateRoute';
-import { AuthContext } from '@/provider/AuthProvider';
-import axios from 'axios';
-import Image from 'next/image';
+import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
-
-
+import {
+     useGetMyBookingsQuery,
+     useUpdateBookingDateMutation,
+     useCancelBookingMutation,
+} from '@/redux/api/bookingApi';
+import Loading from '@/app/loading';
+import { Calendar, Trash2, Edit, Star, Building } from 'lucide-react';
 
 const MyBookings = () => {
-    const { user } = useContext(AuthContext);
-    const [myBooking, setMyBooking] = useState([]);
-    const [newDate, setNewDate] = useState('')
-    const router = useRouter()
+     const { user } = useAuth();
+     const router = useRouter();
+     const { data: myBookings = [], isLoading } = useGetMyBookingsQuery();
+     const [updateBookingDate, { isLoading: isUpdating }] = useUpdateBookingDateMutation();
+     const [cancelBooking, { isLoading: isCancelling }] = useCancelBookingMutation();
 
-    useEffect(() => {
-        if (user?.email) {
-            axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings?email=${user?.email}`, { withCredentials: true })
-                .then(response => setMyBooking(response.data))
-                .catch(error => toast.error('failed to set my bookings'));
-        }
-    }, [user]);
+     const [selectedBooking, setSelectedBooking] = useState(null);
+     const [newDate, setNewDate] = useState('');
 
-    const handleCancel = (roomId, date) => {
-        axios.delete(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/${user.email}`, {
-            data: { roomId, date }
-        })
-            .then(res => {
-                toast.success('Your Booking canceled')
-                const remaining = myBooking.filter(booking => booking.roomId !== roomId || booking.date !== date)
-                setMyBooking(remaining)
-            })
-            .catch(err => {
-                toast.error(`unfortunately you can't cancle booking now`)
-            })
-    };
+     const handleCancel = async (booking) => {
+          if (!confirm(`Are you sure you want to cancel your reservation for ${booking.title}?`)) return;
 
-    const handleUpdateDate = (oldDate, roomId) => {
-        const email = user.email;
-        const bookingUpdateDateInfo = {
-            oldDate,
-            roomId,
-            email,
-            newDate, // this comes from state
-        };
-        axios.patch(`${process.env.NEXT_PUBLIC_BASE_URL}/bookings/update`, bookingUpdateDateInfo)
-            .then(res => {
-                toast.success('Date Updated Successfully')
+          try {
+               await cancelBooking({
+                    idOrEmail: booking.id || booking._id,
+                    roomId: booking.roomId,
+                    date: booking.date,
+               }).unwrap();
+               toast.success('Reservation cancelled successfully');
+          } catch (err) {
+               toast.error(err?.data?.message || 'Failed to cancel reservation');
+          }
+     };
 
-                const updatedBookings = myBooking.map(booking => {
-                    if (booking.roomId === roomId && booking.date === oldDate) {
-                        return { ...booking, date: newDate };
-                    }
-                    return booking;
-                });
-                setMyBooking(updatedBookings);
-                setNewDate(''); // Clear input
+     const handleUpdateDate = async (e) => {
+          e.preventDefault();
+          if (!selectedBooking || !newDate) return;
 
+          try {
+               await updateBookingDate({
+                    roomId: selectedBooking.roomId,
+                    oldDate: selectedBooking.date,
+                    newDate,
+                    email: user?.email,
+               }).unwrap();
+               toast.success('Reservation date rescheduled successfully');
+               setSelectedBooking(null);
+               setNewDate('');
+          } catch (err) {
+               toast.error(err?.data?.message || 'Failed to update reservation date');
+          }
+     };
 
-            })
-            .catch(err => {
-                if (err.response.data.message === 'this room is already booked') {
+     if (isLoading) return <Loading />;
 
-                    toast.error('this room is already booked')
-                }
-            })
-    };
+     return (
+          <PrivateRoute>
+               <div className="max-w-7xl mx-auto px-4 py-12 w-full">
+                    <div className="text-center space-y-2 mb-10">
+                         <p className="text-xs uppercase font-bold tracking-widest text-[#b99d75]">Your Reservation History</p>
+                         <h1 className="text-3xl md:text-5xl font-extrabold font-serif uppercase text-gray-900 dark:text-white">
+                              My Bookings
+                         </h1>
+                    </div>
 
-    if (!myBooking.length > 0) {
-        return (
-            <div className='flex items-center justify-center h-screen w-screen text-center text-5xl text-[#b99d75]'>
-                <h1>You should booked a room first</h1>
-            </div>
-        )
-    }
+                    {myBookings.length === 0 ? (
+                         <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-[#202020] border border-gray-200 dark:border-gray-800 p-8 text-center space-y-4 shadow-sm">
+                              <Building className="w-16 h-16 text-[#b99d75]" />
+                              <h2 className="text-xl font-bold font-serif text-gray-900 dark:text-white uppercase">
+                                   No Active Bookings Found
+                              </h2>
+                              <p className="text-sm text-gray-500 max-w-md">
+                                   You haven&apos;t reserved any suites yet. Discover our signature luxury suites and experience timeless hospitality.
+                              </p>
+                              <button
+                                   onClick={() => router.push('/rooms')}
+                                   className="btn rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase text-xs px-6 py-2"
+                              >
+                                   Browse Luxury Rooms
+                              </button>
+                         </div>
+                    ) : (
+                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                              {myBookings.map((booking) => (
+                                   <div
+                                        key={booking.id || booking._id}
+                                        className="bg-white dark:bg-[#202020] border border-gray-200 dark:border-gray-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                                   >
+                                        <div>
+                                             <div className="relative h-52 w-full overflow-hidden">
+                                                  <img
+                                                       src={booking.image || '/fallback.jpg'}
+                                                       alt={booking.title}
+                                                       className="w-full h-full object-cover"
+                                                  />
+                                                  <div className="absolute top-3 left-3 bg-black/80 text-white text-[10px] font-bold px-2 py-1 uppercase">
+                                                       #{booking.bookingNumber || booking.roomId}
+                                                  </div>
+                                                  <div className="absolute top-3 right-3 bg-emerald-600 text-white text-[10px] font-bold px-2 py-1 uppercase">
+                                                       {booking.status}
+                                                  </div>
+                                             </div>
 
-
-    return (
-        <PrivateRoute>
-            <div className="  bg[#1c1c1c] uppercase py-14 border">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold my-5 mb-14 text-center text-gray-900 dark:text-white whitespace-nowrap">
-                    My Bookings
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
-                    {myBooking?.map((booking) => (
-                        <div
-                            key={booking._id}
-                            className="relative group bg-white/80 dark:bg-gray-800/60 backdrop-blur-xl border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden  transition-transform duration-300 hover:scale-[1]"
-                        >
-                            <Image
-                                width={300}
-                                height={300}
-                                src={booking.image}
-                                alt={booking.title}
-                                className="w-full h-52 object-cover object-center transition duration-300 group-hover:scale-105"
-                            />
-                            <div className="p-6 space-y-3 flex justify-center flex-col items-center">
-                                <h3 className="text-xl font-bold text-gray-800 dark:text-white">{booking.title}</h3>
-                                <p className="text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="font-medium">Room ID:</span> {booking.roomId}
-                                </p>
-                                <p className="text-sm text-gray-700 dark:text-gray-300">
-                                    <span className="font-medium">Date:</span> {booking.date}
-                                </p>
-                                <div className="pt-4 flex justify-center items-center gap-1">
-                                    <button
-                                        onClick={() => handleCancel(booking.roomId, booking.date)}
-                                        className="btn btn-sm rounded-none btn-error text-white"
-                                    >
-                                        ✖️ Cancel
-                                    </button>
-
-
-
-
-
-
-
-
-                                    {/* this is modal part */}
-
-                                    {/* The button to open modal */}
-                                    <label htmlFor={`update_modal_${booking._id}`} className="btn btn-sm rounded-none btn-info text-white">
-                                        🗓️ Update Date
-                                    </label>
-
-                                    {/* The actual modal */}
-                                    <input type="checkbox" id={`update_modal_${booking._id}`} className="modal-toggle" />
-                                    <div className="modal" role="dialog">
-                                        <div className="modal-box">
-                                            <h3 className="text-lg font-bold">Choose a new date</h3>
-                                            <input
-                                                onChange={e => setNewDate(e.target.value)}
-                                                type="date"
-
-                                                required
-                                                className="input input-bordered w-full my-4"
-                                                min={new Date().toISOString().split("T")[0]} // ekhane min date set kora hocche ajker date
-                                            />
-
-                                            <div className="modal-action">
-                                                <label htmlFor={`update_modal_${booking._id}`} className="btn">Cancel</label>
-                                                <label
-                                                    htmlFor={`update_modal_${booking._id}`}
-                                                    className="btn btn-primary"
-                                                    onClick={() => handleUpdateDate(booking.date, booking.roomId)}
-                                                >
-                                                    Update
-                                                </label>
-                                            </div>
+                                             <div className="p-6 space-y-3">
+                                                  <h3 className="text-lg font-bold text-gray-900 dark:text-white uppercase truncate">
+                                                       {booking.title}
+                                                  </h3>
+                                                  <div className="space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                                                       <p className="flex items-center gap-1.5">
+                                                            <Calendar className="w-3.5 h-3.5 text-[#b99d75]" />
+                                                            <span>Arrival Date: <strong className="text-gray-900 dark:text-white">{booking.date}</strong></span>
+                                                       </p>
+                                                       <p>
+                                                            <span>Total Rate: <strong>${booking.price || booking.totalAmount}</strong></span>
+                                                       </p>
+                                                  </div>
+                                             </div>
                                         </div>
-                                    </div>
 
-                                    <button
-                                        onClick={() => router.push(`/review/${booking.roomId}`)}
-                                        className="btn rounded-none btn-sm btn-accent text-white"
-                                    >
-                                        ⭐ Review
-                                    </button>
-                                </div>
-                            </div>
-                            {/* Accent glow effect */}
-                            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-300 to-pink-300 blur-2xl opacity-10 group-hover:opacity-15 transition pointer-events-none rounded-3xl" />
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </PrivateRoute>
-    );
+                                        <div className="p-6 pt-0 flex flex-wrap items-center gap-2 border-t border-gray-100 dark:border-gray-800 pt-4">
+                                             <button
+                                                  onClick={() => setSelectedBooking(booking)}
+                                                  className="btn btn-xs rounded-none bg-sky-600 hover:bg-sky-700 text-white uppercase flex items-center gap-1"
+                                             >
+                                                  <Edit className="w-3 h-3" /> Reschedule
+                                             </button>
+
+                                             <button
+                                                  onClick={() => handleCancel(booking)}
+                                                  className="btn btn-xs rounded-none bg-red-600 hover:bg-red-700 text-white uppercase flex items-center gap-1"
+                                             >
+                                                  <Trash2 className="w-3 h-3" /> Cancel
+                                             </button>
+
+                                             <button
+                                                  onClick={() => router.push(`/review/${booking.roomId}`)}
+                                                  className="btn btn-xs rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase flex items-center gap-1 ml-auto"
+                                             >
+                                                  <Star className="w-3 h-3" /> Review
+                                             </button>
+                                        </div>
+                                   </div>
+                              ))}
+                         </div>
+                    )}
+
+                    {/* Reschedule Date Modal */}
+                    {selectedBooking && (
+                         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+                              <div className="bg-white dark:bg-[#202020] p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4">
+                                   <h3 className="text-lg font-bold font-serif uppercase text-gray-900 dark:text-white">
+                                        Reschedule Arrival Date
+                                   </h3>
+                                   <p className="text-xs text-gray-500">
+                                        Rescheduling reservation for <b>{selectedBooking.title}</b> (Current Date: {selectedBooking.date})
+                                   </p>
+
+                                   <form onSubmit={handleUpdateDate} className="space-y-4">
+                                        <div>
+                                             <label className="block text-xs font-bold uppercase mb-1">
+                                                  Select New Date
+                                             </label>
+                                             <input
+                                                  type="date"
+                                                  required
+                                                  min={new Date().toISOString().split('T')[0]}
+                                                  value={newDate}
+                                                  onChange={(e) => setNewDate(e.target.value)}
+                                                  className="w-full p-2.5 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-[#b99d75] text-xs"
+                                             />
+                                        </div>
+
+                                        <div className="flex justify-end gap-2 pt-2">
+                                             <button
+                                                  type="button"
+                                                  onClick={() => {
+                                                       setSelectedBooking(null);
+                                                       setNewDate('');
+                                                  }}
+                                                  className="btn btn-sm rounded-none btn-ghost text-xs uppercase"
+                                             >
+                                                  Cancel
+                                             </button>
+                                             <button
+                                                  type="submit"
+                                                  disabled={isUpdating}
+                                                  className="btn btn-sm rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white text-xs uppercase"
+                                             >
+                                                  {isUpdating ? 'Updating...' : 'Save New Date'}
+                                             </button>
+                                        </div>
+                                   </form>
+                              </div>
+                         </div>
+                    )}
+               </div>
+          </PrivateRoute>
+     );
 };
 
 export default MyBookings;

@@ -1,166 +1,118 @@
-# 🌐 Innora Client Side
+# 🌐 INNORA Hotel Management System — Client Web Application
 
-Welcome to the **Innora** backend repository — a secure, scalable hotel room booking system designed for modern web applications. This server uses **Express.js** and **MongoDB**, supports JWT authentication with cookies, and ensures smooth room management and booking operations.
-
----
-
-## 🔗 Live Server Link
-
-**Backend Server:** [Innora Server on Vercel](innora-server-side.vercel.app)
-
-**Frontend Client:** [Innora Client on Vercel](innora-client-side-1.vercel.app
-)
+Welcome to the **INNORA Client Application**, a luxury hotel reservation platform and administrative dashboard built with **Next.js 15 (App Router)**, **Redux Toolkit**, **RTK Query**, and **Tailwind CSS**.
 
 ---
 
-## 🚀 Key Features
+## 🌟 Key Features & Architecture
 
-* 🔐 **Secure JWT Cookie Authentication** — Tokens are stored in HTTP-only cookies for better security.
-* 🏛️ **Room Management** — Fetch, view, and review rooms, and track booked dates.
-* 📅 **Booking System** — Users can book rooms, reschedule, or cancel with date conflict checks.
-* ⭐ **User Reviews** — Submit and aggregate ratings and comments for rooms.
-* 🔄 **Token Verification Middleware** — Ensures secure access to protected endpoints.
-* ✅ **RESTful Design** — Clear, modular endpoint structure.
-
----
-
-## 🧰 Core Dependencies
-
-| Package       | Version | Purpose                          |
-| ------------- | ------- | -------------------------------- |
-| express       | latest  | API server framework             |
-| cors          | latest  | Cross-Origin request support     |
-| dotenv        | latest  | Environment variable loader      |
-| cookie-parser | latest  | Parse cookies from HTTP requests |
-| jsonwebtoken  | latest  | JWT creation and verification    |
-| mongodb       | latest  | MongoDB database interaction     |
-
-### 🖥️ Frontend Dependencies
-
-| Package               | Purpose                         |
-| --------------------- | ------------------------------- |
-| next                  | React framework for SSR/SSG     |
-| react / react-dom     | Core libraries for UI rendering |
-| firebase              | Authentication and storage      |
-| axios                 | API communication               |
-| framer-motion         | Animations                      |
-| tailwindcss + daisyUI | Styling toolkit                 |
-| react-hot-toast       | Toast notifications             |
-| react-icons           | Icon set                        |
-| swiper / slick        | Carousel and sliders            |
+### 🏨 Guest Experience & Booking Portal
+- **Luxury Aesthetic:** Tailored dark mode, gold styling (`#b99d75`, `#c0a783`), serif typography, and Framer Motion transitions.
+- **Dynamic Banners & Highlights:** Live homepage carousel slides and featured suites fetched from the backend.
+- **Suites Catalog (`/rooms`):** Instant search, guest capacity filtering, category selection, and price sorting.
+- **Room Details (`/roomDetails/[id]`):** Rich suite descriptions, high-resolution galleries, amenities breakdown, and verified guest reviews.
+- **Instant Suite Reservation (`/booking/[id]`):** Interactive check-in/out date picker with automatic total price calculation and guest collision handling.
+- **Reservation History (`/myBookings`):** View past and active reservations, modal-based rescheduling, reservation cancellation, and direct review submission.
+- **Inquiry Portal (`/contact`):** Submit contact messages and banquet reservation requests.
 
 ---
 
-## 📚 API Overview
-
-### 🔐 Authentication
-
-| Method | Endpoint  | Description                        |
-| ------ | --------- | ---------------------------------- |
-| POST   | `/jwt`    | Sign in and issue token via cookie |
-| POST   | `/logout` | Clears JWT cookie on logout        |
-
----
-
-### 🏛️ Room Management
-
-| Method | Endpoint             | Access        | Description                        |
-| ------ | -------------------- | ------------- | ---------------------------------- |
-| GET    | `/rooms`             | Authenticated | Get all rooms (with email check)   |
-| GET    | `/homePageRooms`     | Public        | Get all rooms for homepage display |
-| GET    | `/rooms/:id`         | Public        | Get a single room by ID            |
-| PATCH  | `/rooms/:id/reviews` | Public        | Add a review to a specific room    |
+### 📊 Multi-Role Management Dashboard (`/dashboard`)
+An enterprise dashboard designed for hotel staff and administrators with role-specific views:
+- **Overview (`/dashboard`):** Real-time key performance indicators (Total Revenue, Total Bookings, Occupancy Rate %, Active Suites), 6-month revenue trends, recent reservations, and latest guest reviews.
+- **Suites Management (`/dashboard/rooms`):** Comprehensive room inventory management (Add/Edit suites, price adjustments, capacity, room status, availability toggle).
+- **Reservations Desk (`/dashboard/bookings`):** Search bookings, adjust guest dates, and process status transitions (`CONFIRMED`, `CHECKED_IN`, `CHECKED_OUT`, `CANCELLED`).
+- **Review Moderation (`/dashboard/reviews`):** Moderate guest feedback and delete inappropriate reviews.
+- **Inquiries Desk (`/dashboard/inquiries`):** Review guest inquiries and update ticket statuses (`PENDING`, `IN_PROGRESS`, `RESOLVED`, `CLOSED`).
+- **Staff & User Roles (`/dashboard/users`):** Manage customer accounts and assign elevated staff/admin roles (`STAFF`, `ADMIN`, `SUPER_ADMIN`).
+- **Hotel Settings & Banners (`/dashboard/settings`):** Configure hotel contact info, check-in/out policies, and manage homepage carousel slides.
+- **Profile & Security (`/dashboard/profile`):** Update personal details and change account password.
 
 ---
 
-### 📅 Booking Management
+### 🗂️ Redux Toolkit & RTK Query Architecture
 
-| Method | Endpoint           | Access        | Description                          |
-| ------ | ------------------ | ------------- | ------------------------------------ |
-| GET    | `/bookings?email=` | Authenticated | Get all bookings for a specific user |
-| POST   | `/bookings`        | Public        | Create a new room booking            |
-| PATCH  | `/bookings/update` | Public        | Reschedule a booking                 |
-| DELETE | `/bookings/:email` | Public        | Delete a specific booking            |
-| GET    | `/allbookings`     | Public        | Get all bookings (admin use case)    |
+```
+INNORA-CLIENT-SIDE/src/
+├── redux/
+│   ├── store.js                  # Redux store with baseApi middleware
+│   ├── ReduxProvider.jsx         # Client provider wrapper
+│   ├── slices/
+│   │   └── authSlice.js          # Authentication state, current user, role
+│   └── api/
+│       ├── baseApi.js            # RTK Query base with credentials & automatic unwrapping
+│       ├── authApi.js            # Login, register, me, profile, change password
+│       ├── roomApi.js            # Rooms CRUD, featured suites, availability
+│       ├── bookingApi.js         # Bookings, my bookings, reschedule, cancel, status
+│       ├── reviewApi.js          # Room reviews, submit review, moderate
+│       ├── dashboardApi.js       # Admin stats & customer metrics
+│       ├── inquiryApi.js         # Contact & banquet inquiries
+│       ├── settingApi.js         # Hotel settings & banner slides
+│       ├── userApi.js            # User management & role assignment
+│       └── uploadApi.js          # Image upload service
+├── hooks/
+│   └── useAuth.js                # Custom hook for reactive auth state & permissions
+├── components/
+│   ├── auth/
+│   │   ├── AuthInitializer.jsx  # Background session restore from HttpOnly cookie
+│   │   └── ProtectedRoute.jsx   # Route guard protecting dashboard and myBookings
+│   ├── dashboard/                # Dashboard Sidebar, Header, StatCards
+│   └── ...                       # Navbar, Footer, RoomCard, Banner
+└── app/
+    ├── dashboard/                # Management dashboard sub-pages
+    ├── rooms/                    # Room catalog
+    ├── roomDetails/[id]/         # Room details & reviews
+    ├── booking/[id]/             # Booking reservation modal/page
+    ├── myBookings/               # Guest reservation history
+    ├── signin/                   # Sign in page
+    ├── signup/                   # Sign up page
+    └── contact/                  # Contact & inquiries page
+```
 
 ---
 
-## 🚧 Environment Variables
+## ⚙️ Environment Configuration
 
-Create a `.env` file with the following keys:
+Create a `.env.local` file in `INNORA-CLIENT-SIDE/`:
 
 ```env
-PORT=5000
-DB_USER=your_db_username
-DB_PASS=your_db_password
-ACCESS_TOKEN=your_jwt_secret
+NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 ```
 
 ---
 
-## 🛠️ Installation
+## 🚀 Getting Started
 
-### Backend Setup
-
-1. **Clone the backend repository**
-
-```bash
-git clone https://github.com/your-username/innora-server.git
-cd innora-server
-```
-
-2. **Install dependencies**
-
+### 1. Install Dependencies
 ```bash
 npm install
 ```
 
-3. **Configure environment**
-
-```bash
-touch .env
-# Add environment keys
-```
-
-4. **Run the server**
-
-```bash
-npm start
-```
-
-### Frontend Setup
-
-1. **Clone the frontend repository**
-
-```bash
-git clone https://github.com/your-username/innora-client.git
-cd innora-client
-```
-
-2. **Install frontend packages**
-
-```bash
-npm install
-```
-
-3. **Run development server**
-
+### 2. Run Development Server
 ```bash
 npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+### 3. Build for Production
+```bash
+npm run build
+npm run start
+```
+
 ---
 
-## 👤 Example Admin Testing
+## 🔑 Demo Accounts for Immediate Testing
 
-Currently, there is no fixed admin login route, but booking access control is enforced via token + email match.
+| Role | Email | Password | Dashboard Access |
+| :--- | :--- | :--- | :--- |
+| **Super Admin** | `superadmin@innora.com` | `Admin@123456` | Full Platform & User Management |
+| **Admin** | `admin@innora.com` | `Admin@123456` | Bookings, Rooms, Reviews, Inquiries |
+| **Staff** | `staff@innora.com` | `Staff@123456` | Front-Desk Operations & Check-in/out |
+| **Customer** | `customer@innora.com` | `Customer@123456` | Guest Reservation History & Stays |
 
 ---
 
 ## 📜 License
-
-This project is licensed under the **MIT License**. See the `LICENSE` file for more info.
-
----
-
-Thank you for using the **Innora Hotel Booking System**! For bugs or contributions, please open an issue or submit a PR.
+This project is licensed under the **MIT License**.

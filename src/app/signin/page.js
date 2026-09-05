@@ -1,91 +1,99 @@
-'use client'
-import { AuthContext } from '@/provider/AuthProvider';
+'use client';
+
+import { useAuth } from '@/hooks/useAuth';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React, { useContext } from 'react';
+import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 
 const Page = () => {
-    const { signInUser, googleLogin } = useContext(AuthContext)
-    const router = useRouter()
+     const { login } = useAuth();
+     const router = useRouter();
+     const [loading, setLoading] = useState(false);
 
+     const handleSignIn = async (e) => {
+          e.preventDefault();
+          const form = e.target;
+          const email = form.email.value.trim();
+          const password = form.password.value;
 
+          setLoading(true);
+          try {
+               await login({ email, password });
+               toast.success('Signed in successfully! Welcome back.');
+               router.push('/');
+          } catch (error) {
+               const errorMsg = error?.data?.message || error?.message || 'Invalid email or password';
+               toast.error(errorMsg);
+          } finally {
+               setLoading(false);
+          }
+     };
 
-    // email and password login manage
-    const handleSignIn = e => {
-        e.preventDefault()
-        const form = e.target
-        const email = form.email.value
-        const password = form.password.value
-        signInUser(email, password)
-            .then(result => {
-                router.push('/')
-                toast.success('User Sign Successfully')
-            })
-            .catch((error) => {
-                const errorMessage = error.code.replace("auth/", ""); 
-                toast.error(errorMessage)
-            })
-    }
+     return (
+          <div className="min-h-[85vh] flex items-center justify-center p-4 bg-gray-50 dark:bg-[#151515]">
+               <div className="w-full max-w-md bg-white dark:bg-[#202020] shadow-2xl p-8 border border-gray-200 dark:border-gray-800 transition-all duration-300">
+                    <h2 className="text-2xl font-bold mb-2 text-center uppercase tracking-widest text-gray-900 dark:text-white font-serif">
+                         Sign In to INNORA
+                    </h2>
+                    <p className="text-xs text-center text-gray-500 dark:text-gray-400 mb-6 uppercase tracking-wider">
+                         Access Your Luxury Experience & Reservations
+                    </p>
 
-    // google login manage
-    const handleGoogle = () => {
-        googleLogin()
-            .then(() => {
-                router.push('/')
-                toast.success('User Sign Successfully')
-            })
-            .catch(error => {
-                const errorMessage = error.code.replace("auth/", "");
-                toast.error(errorMessage)
-            })
-    }
+                    <form onSubmit={handleSignIn} className="flex flex-col gap-4">
+                         <div>
+                              <label className="text-xs uppercase font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+                                   Email Address
+                              </label>
+                              <input
+                                   placeholder="e.g. customer@innora.com"
+                                   className="w-full p-3 bg-transparent border border-gray-300 dark:border-gray-700 dark:text-white focus:outline-none focus:border-[#b99d75]"
+                                   type="email"
+                                   name="email"
+                                   required
+                              />
+                         </div>
 
+                         <div>
+                              <label className="text-xs uppercase font-semibold text-gray-700 dark:text-gray-300 mb-1 block">
+                                   Password
+                              </label>
+                              <input
+                                   placeholder="••••••••"
+                                   className="w-full p-3 bg-transparent border border-gray-300 dark:border-gray-700 dark:text-white focus:outline-none focus:border-[#b99d75]"
+                                   type="password"
+                                   name="password"
+                                   required
+                              />
+                         </div>
 
+                         <div className="pt-2">
+                              <button
+                                   disabled={loading}
+                                   className="w-full py-3 bg-black dark:bg-[#b99d75] text-white font-bold uppercase tracking-wider hover:bg-[#b99d75] dark:hover:bg-[#a68c65] transition duration-300 disabled:opacity-50 cursor-pointer"
+                                   type="submit"
+                              >
+                                   {loading ? 'Authenticating...' : 'Sign In'}
+                              </button>
+                         </div>
 
+                         <div className="mt-4 text-center text-xs text-gray-600 dark:text-gray-400">
+                              Don&apos;t have an account?{' '}
+                              <Link href="/signup" className="text-[#b99d75] font-bold hover:underline">
+                                   Sign Up
+                              </Link>
+                         </div>
 
-
-    return (
-        // sign in
-        <div>
-            <div className="flex flex-col items-center justify-center h-screen ">
-                <div className="w-full max-w-md  shadow p-6 border border-gray-300  dark:bg-[#c0a783] md:hover:scale-150 transition-all duration-700 ease-in-out">
-                    <h2 className="text-2xl  font-semibold  mb-4 text-center uppercase dark:text-white">SignIn to INNORA</h2>
-                    <form onSubmit={handleSignIn} className="flex flex-col gap-2">
-                        <input
-                            placeholder="Email address"
-                            className="bg-transparent p-3 border-black border dark:hover:border-white w-full"
-                            type="email"
-                            name='email'
-                        />
-                        <input
-                            placeholder="Password"
-                            className="bg-transparent p-3 border-black border dark:hover:border-white w-full"
-                            type="password"
-                            name='password'
-                        />
-                        <div className='w-full'>
-                            <button
-                                className="bg-black border w-full py-2 border-white text-white uppercase dark:hover:bg-white dark:hover:text-black dark:hover:border-black font-extrabold"
-                                type="submit"
-                            >
-                                SignIn
-                            </button>
-                            <p className="mt-4 text-center w-full dark:hover:text-white">
-                                Dont have an account? <Link href={'/signup'} className='text-black   dark:hover:text-white'>SignUp</Link>
-                            </p>
-                        </div>
-                        <div className="divider text-white my-0">OR</div>
-
-                        <button onClick={handleGoogle} className="btn rounded-none bg-white text-black border-[#e5e5e5]">
-                            <svg aria-label="Google logo" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><g><path d="m0 0H512V512H0" fill="#fff"></path><path fill="#34a853" d="M153 292c30 82 118 95 171 60h62v48A192 192 0 0190 341"></path><path fill="#4285f4" d="m386 400a140 175 0 0053-179H260v74h102q-7 37-38 57"></path><path fill="#fbbc02" d="m90 341a208 200 0 010-171l63 49q-12 37 0 73"></path><path fill="#ea4335" d="m153 219c22-69 116-109 179-50l55-54c-78-75-230-72-297 55"></path></g></svg>
-                            Login with Google
-                        </button>
+                         <div className="mt-4 p-3 bg-gray-100 dark:bg-[#2a2a2a] text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded">
+                              <p className="font-bold text-[#b99d75] mb-1">Demo Accounts:</p>
+                              <p>👑 <b>SuperAdmin:</b> superadmin@innora.com / Admin@123456</p>
+                              <p>🏨 <b>Staff:</b> staff@innora.com / Staff@123456</p>
+                              <p>✨ <b>Customer:</b> customer@innora.com / Customer@123456</p>
+                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    );
+               </div>
+          </div>
+     );
 };
 
 export default Page;
