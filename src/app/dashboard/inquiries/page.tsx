@@ -8,12 +8,13 @@ import DataTable from '@/components/shared/DataTable';
 import StatusBadge from '@/components/shared/StatusBadge';
 import DeleteConfirmationDialog from '@/components/shared/DeleteConfirmationDialog';
 import { useAuth } from '@/hooks/useAuth';
-import { useGetInquiriesQuery, useDeleteInquiryMutation } from '@/redux/api/inquiryApi';
+import { useGetInquiriesQuery, useGetMyInquiriesQuery, useDeleteInquiryMutation } from '@/redux/api/inquiryApi';
 import { MessageSquare, Eye, Trash2, PlusCircle, CheckSquare } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function InquiriesManagementPage() {
-     const { isSuperAdmin, isAdmin, isStaff } = useAuth();
+     const { user, isSuperAdmin, isAdmin, isStaff } = useAuth();
+     const isManagement = isSuperAdmin || isAdmin || isStaff;
      const canDelete = isSuperAdmin || isAdmin;
 
      const [search, setSearch] = useState('');
@@ -23,11 +24,30 @@ export default function InquiriesManagementPage() {
 
      const [deletingInquiry, setDeletingInquiry] = useState(null);
 
-     const { data: inquiriesData, isLoading, error } = useGetInquiriesQuery();
+     const { data: allInquiriesData, isLoading: isAllLoading, error: allError } = useGetInquiriesQuery(
+          undefined,
+          { skip: !isManagement }
+     );
+
+     const { data: myInquiriesData, isLoading: isMyLoading, error: myError } = useGetMyInquiriesQuery(
+          undefined,
+          { skip: isManagement }
+     );
+
+     const inquiriesData = isManagement ? allInquiriesData : myInquiriesData;
+     const isLoading = isManagement ? isAllLoading : isMyLoading;
+     const error = isManagement ? allError : myError;
+
      const [deleteInquiry, { isLoading: isDeleting }] = useDeleteInquiryMutation();
 
      const filteredInquiries = useMemo(() => {
-          const rawInquiries = Array.isArray(inquiriesData) ? inquiriesData : inquiriesData?.data || [];
+          const rawInquiries = Array.isArray(inquiriesData)
+               ? inquiriesData
+               : Array.isArray(inquiriesData?.data)
+               ? inquiriesData.data
+               : Array.isArray(inquiriesData?.data?.data)
+               ? inquiriesData.data.data
+               : [];
           return rawInquiries.filter((inq) => {
                const matchesStatus = statusFilter === 'ALL' || inq.status === statusFilter;
                const term = search.toLowerCase().trim();
@@ -136,10 +156,10 @@ export default function InquiriesManagementPage() {
                          <Link
                               href={`/dashboard/inquiries/${inq.id || inq._id}`}
                               className="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 hover:bg-[#b99d75] text-gray-700 dark:text-gray-300 hover:text-white text-[10px] font-bold uppercase transition cursor-pointer flex items-center gap-1"
-                              title="View & Action Inquiry"
+                              title={isManagement ? "View & Action Inquiry" : "View Inquiry Details"}
                          >
                               <Eye className="w-3 h-3" />
-                              <span>View & Action</span>
+                              <span>{isManagement ? "View & Action" : "View Details"}</span>
                          </Link>
 
                          {canDelete && (
@@ -160,8 +180,12 @@ export default function InquiriesManagementPage() {
      return (
           <div className="space-y-6">
                <PageHeader
-                    title="Guest Inquiries & Concierge Messages"
-                    description="Respond to contact requests, event inquiries, private suite bookings, and concierge assistance."
+                    title={isManagement ? "Guest Inquiries & Concierge Messages" : "My Concierge Inquiries"}
+                    description={
+                         isManagement
+                              ? "Respond to contact requests, event inquiries, private suite bookings, and concierge assistance."
+                              : "Track and view your inquiries, private suite requests, and concierge communications."
+                    }
                     breadcrumbs={[
                          { label: 'Dashboard', href: '/dashboard' },
                          { label: 'Inquiries' },

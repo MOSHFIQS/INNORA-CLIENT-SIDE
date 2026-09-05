@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Search, RotateCcw, Filter } from 'lucide-react';
+import { Search, RotateCcw } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export interface FilterOption {
      label: string;
@@ -51,13 +53,13 @@ export default function SearchFilterBar({
                          {/* Search Input */}
                          {onSearchChange && (
                               <div className="relative flex-1 min-w-[220px] max-w-md">
-                                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                   <input
+                                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                                   <Input
                                         type="text"
                                         value={search}
                                         onChange={(e) => onSearchChange(e.target.value)}
                                         placeholder={searchPlaceholder}
-                                        className="w-full pl-9 pr-4 py-2 text-xs rounded-none border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1f1f1f] text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:border-[#b99d75] transition"
+                                        className="pl-9 pr-4"
                                    />
                               </div>
                          )}
@@ -68,7 +70,7 @@ export default function SearchFilterBar({
                                    <select
                                         value={filter.value}
                                         onChange={(e) => filter.onChange(e.target.value)}
-                                        className="w-full px-3 py-2 text-xs rounded-none border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1f1f1f] text-gray-700 dark:text-gray-300 font-medium focus:outline-none focus:border-[#b99d75] transition cursor-pointer"
+                                        className="w-full h-9 px-3 py-1.5 text-xs rounded-none border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#1a1a1a] text-gray-700 dark:text-gray-300 font-medium focus:outline-none focus:border-[#b99d75] transition cursor-pointer"
                                    >
                                         {filter.options.map((opt) => (
                                              <option key={opt.value} value={opt.value}>
@@ -81,15 +83,17 @@ export default function SearchFilterBar({
 
                          {/* Reset Filters */}
                          {hasActiveFilters && onReset && (
-                              <button
+                              <Button
                                    type="button"
+                                   variant="ghost"
+                                   size="sm"
                                    onClick={onReset}
-                                   className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-gray-500 hover:text-red-500 dark:hover:text-red-400 transition cursor-pointer"
+                                   className="text-gray-500 hover:text-red-500 dark:hover:text-red-400"
                                    title="Reset all filters"
                               >
                                    <RotateCcw className="w-3.5 h-3.5" />
                                    <span>Reset</span>
-                              </button>
+                              </Button>
                          )}
                     </div>
 

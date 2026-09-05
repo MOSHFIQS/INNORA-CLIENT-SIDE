@@ -10,6 +10,7 @@ import DeleteConfirmationDialog from '@/components/shared/DeleteConfirmationDial
 import { useAuth } from '@/hooks/useAuth';
 import {
      useGetAllReviewsQuery,
+     useGetMyReviewsQuery,
      useUpdateReviewStatusMutation,
      useDeleteReviewMutation,
 } from '@/redux/api/reviewApi';
@@ -17,7 +18,8 @@ import { Star, CheckCircle, XCircle, Trash2, PlusCircle, Eye } from 'lucide-reac
 import toast from 'react-hot-toast';
 
 export default function ReviewsManagementPage() {
-     const { isSuperAdmin, isAdmin, isStaff } = useAuth();
+     const { user, isSuperAdmin, isAdmin, isStaff } = useAuth();
+     const isManagement = isSuperAdmin || isAdmin || isStaff;
      const canModerate = isSuperAdmin || isAdmin || isStaff;
      const canDelete = isSuperAdmin || isAdmin;
 
@@ -28,7 +30,20 @@ export default function ReviewsManagementPage() {
 
      const [deletingReview, setDeletingReview] = useState(null);
 
-     const { data: reviewsData, isLoading, error } = useGetAllReviewsQuery();
+     const { data: allReviewsData, isLoading: isAllLoading, error: allError } = useGetAllReviewsQuery(
+          undefined,
+          { skip: !isManagement }
+     );
+
+     const { data: myReviewsData, isLoading: isMyLoading, error: myError } = useGetMyReviewsQuery(
+          undefined,
+          { skip: isManagement }
+     );
+
+     const reviewsData = isManagement ? allReviewsData : myReviewsData;
+     const isLoading = isManagement ? isAllLoading : isMyLoading;
+     const error = isManagement ? allError : myError;
+
      const [updateReviewStatus] = useUpdateReviewStatusMutation();
      const [deleteReview, { isLoading: isDeleting }] = useDeleteReviewMutation();
 
@@ -203,8 +218,12 @@ export default function ReviewsManagementPage() {
      return (
           <div className="space-y-6">
                <PageHeader
-                    title="Guest Reviews Moderation"
-                    description="Curate authentic guest testimonials, moderate suite feedback, and maintain luxury hospitality standards."
+                    title={isManagement ? "Guest Reviews Moderation" : "My Suite Reviews"}
+                    description={
+                         isManagement
+                              ? "Curate authentic guest testimonials, moderate suite feedback, and maintain luxury hospitality standards."
+                              : "Review your submitted suite feedback, ratings, and testimonials."
+                    }
                     breadcrumbs={[
                          { label: 'Dashboard', href: '/dashboard' },
                          { label: 'Reviews' },

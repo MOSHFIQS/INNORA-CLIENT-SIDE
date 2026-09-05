@@ -12,6 +12,8 @@ import {
 } from '@/redux/api/bookingApi';
 import Loading from '@/app/loading';
 import { Calendar, Trash2, Edit, Star, Building } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import FormDialog from '@/components/shared/FormDialog';
 
 const MyBookings = () => {
      const { user } = useAuth();
@@ -124,26 +126,31 @@ const MyBookings = () => {
                                         </div>
 
                                         <div className="p-6 pt-0 flex flex-wrap items-center gap-2 border-t border-gray-100 dark:border-gray-800 pt-4">
-                                             <button
+                                             <Button
+                                                  size="xs"
+                                                  variant="secondary"
                                                   onClick={() => setSelectedBooking(booking)}
-                                                  className="btn btn-xs rounded-none bg-sky-600 hover:bg-sky-700 text-white uppercase flex items-center gap-1"
+                                                  className="flex items-center gap-1 bg-sky-600 hover:bg-sky-700 text-white"
                                              >
                                                   <Edit className="w-3 h-3" /> Reschedule
-                                             </button>
+                                             </Button>
 
-                                             <button
+                                             <Button
+                                                  size="xs"
+                                                  variant="destructive"
                                                   onClick={() => handleCancel(booking)}
-                                                  className="btn btn-xs rounded-none bg-red-600 hover:bg-red-700 text-white uppercase flex items-center gap-1"
+                                                  className="flex items-center gap-1"
                                              >
                                                   <Trash2 className="w-3 h-3" /> Cancel
-                                             </button>
+                                             </Button>
 
-                                             <button
+                                             <Button
+                                                  size="xs"
                                                   onClick={() => router.push(`/review/${booking.roomId}`)}
-                                                  className="btn btn-xs rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase flex items-center gap-1 ml-auto"
+                                                  className="flex items-center gap-1 ml-auto"
                                              >
                                                   <Star className="w-3 h-3" /> Review
-                                             </button>
+                                             </Button>
                                         </div>
                                    </div>
                               ))}
@@ -151,54 +158,53 @@ const MyBookings = () => {
                     )}
 
                     {/* Reschedule Date Modal */}
-                    {selectedBooking && (
-                         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-                              <div className="bg-white dark:bg-[#202020] p-6 max-w-md w-full border border-gray-200 dark:border-gray-800 shadow-2xl space-y-4">
-                                   <h3 className="text-lg font-bold font-serif uppercase text-gray-900 dark:text-white">
-                                        Reschedule Arrival Date
-                                   </h3>
-                                   <p className="text-xs text-gray-500">
-                                        Rescheduling reservation for <b>{selectedBooking.title}</b> (Current Date: {selectedBooking.date})
-                                   </p>
-
-                                   <form onSubmit={handleUpdateDate} className="space-y-4">
-                                        <div>
-                                             <label className="block text-xs font-bold uppercase mb-1">
-                                                  Select New Date
-                                             </label>
-                                             <input
-                                                  type="date"
-                                                  required
-                                                  min={new Date().toISOString().split('T')[0]}
-                                                  value={newDate}
-                                                  onChange={(e) => setNewDate(e.target.value)}
-                                                  className="w-full p-2.5 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-[#b99d75] text-xs"
-                                             />
-                                        </div>
-
-                                        <div className="flex justify-end gap-2 pt-2">
-                                             <button
-                                                  type="button"
-                                                  onClick={() => {
-                                                       setSelectedBooking(null);
-                                                       setNewDate('');
-                                                  }}
-                                                  className="btn btn-sm rounded-none btn-ghost text-xs uppercase"
-                                             >
-                                                  Cancel
-                                             </button>
-                                             <button
-                                                  type="submit"
-                                                  disabled={isUpdating}
-                                                  className="btn btn-sm rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white text-xs uppercase"
-                                             >
-                                                  {isUpdating ? 'Updating...' : 'Save New Date'}
-                                             </button>
-                                        </div>
-                                   </form>
+                    <FormDialog
+                         isOpen={Boolean(selectedBooking)}
+                         onClose={() => {
+                              setSelectedBooking(null);
+                              setNewDate('');
+                         }}
+                         title="Reschedule Arrival Date"
+                         description={selectedBooking ? `Rescheduling reservation for ${selectedBooking.title} (Current Date: ${selectedBooking.date})` : undefined}
+                         maxWidth="max-w-md"
+                    >
+                         <form onSubmit={handleUpdateDate} className="space-y-4">
+                              <div>
+                                   <label className="block text-xs font-bold uppercase mb-1">
+                                        Select New Date
+                                   </label>
+                                   <input
+                                        type="date"
+                                        required
+                                        min={new Date().toISOString().split('T')[0]}
+                                        value={newDate}
+                                        onChange={(e) => setNewDate(e.target.value)}
+                                        className="w-full p-2.5 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-white focus:outline-none focus:border-[#b99d75] text-xs"
+                                   />
                               </div>
-                         </div>
-                    )}
+
+                              <div className="flex justify-end gap-2 pt-2">
+                                   <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => {
+                                             setSelectedBooking(null);
+                                             setNewDate('');
+                                        }}
+                                   >
+                                        Cancel
+                                   </Button>
+                                   <Button
+                                        type="submit"
+                                        size="sm"
+                                        disabled={isUpdating}
+                                   >
+                                        {isUpdating ? 'Updating...' : 'Save New Date'}
+                                   </Button>
+                              </div>
+                         </form>
+                    </FormDialog>
                </div>
           </PrivateRoute>
      );

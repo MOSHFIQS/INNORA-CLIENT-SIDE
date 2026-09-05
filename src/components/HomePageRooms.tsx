@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Users, Eye, Star } from 'lucide-react';
 import Loading from '@/app/loading';
 import { useGetHomePageRoomsQuery } from '@/redux/api/roomApi';
+import { Button } from '@/components/ui/button';
 
 function HomePageRooms() {
      const { data: allRooms = [], isLoading } = useGetHomePageRoomsQuery();
@@ -94,12 +95,12 @@ function HomePageRooms() {
                                                   >
                                                        View Details →
                                                   </button>
-                                                  <button
+                                                  <Button
+                                                       size="xs"
                                                        onClick={() => router.push(`/booking/${room.id || room._id}`)}
-                                                       className="btn btn-xs rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase text-[10px]"
                                                   >
                                                        Book Now
-                                                  </button>
+                                                  </Button>
                                              </div>
                                         </div>
                                    </div>

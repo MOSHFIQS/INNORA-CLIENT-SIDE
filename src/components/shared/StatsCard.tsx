@@ -3,6 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowDownRight, LucideIcon } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 interface StatsCardProps {
      title: string;
@@ -25,7 +27,7 @@ export default function StatsCard({
      color = 'gold',
      href,
 }: StatsCardProps) {
-     const colorMap = {
+     const colorMap: Record<string, { iconBg: string; badge: string }> = {
           gold: {
                iconBg: 'bg-[#b99d75]/10 text-[#b99d75] border-[#b99d75]/20',
                badge: 'text-[#b99d75]',
@@ -50,8 +52,8 @@ export default function StatsCard({
 
      const activeColor = colorMap[color] || colorMap.gold;
 
-     const CardContent = (
-          <div className="group relative overflow-hidden bg-white dark:bg-[#1e1e1e] border border-gray-200/80 dark:border-gray-800 p-5 shadow-xs transition-all duration-300 hover:shadow-md hover:border-[#b99d75]/40 flex flex-col justify-between h-full">
+     const CardInner = (
+          <Card className="group relative overflow-hidden p-5 shadow-xs transition-all duration-300 hover:shadow-md hover:border-[#b99d75]/40 flex flex-col justify-between h-full bg-white dark:bg-[#1a1a1a]">
                <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1.5 flex-1 min-w-0">
                          <p className="text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest truncate">
@@ -63,7 +65,7 @@ export default function StatsCard({
                     </div>
 
                     {Icon && (
-                         <div className={`p-2.5 rounded-xl border shrink-0 transition-transform duration-300 group-hover:scale-110 ${activeColor.iconBg}`}>
+                         <div className={cn('p-2.5 border shrink-0 transition-transform duration-300 group-hover:scale-110', activeColor.iconBg)}>
                               <Icon className="w-5 h-5" />
                          </div>
                     )}
@@ -78,13 +80,14 @@ export default function StatsCard({
                          )}
                          {trend && (
                               <span
-                                   className={`flex items-center gap-0.5 font-bold shrink-0 ml-2 ${
+                                   className={cn(
+                                        'flex items-center gap-0.5 font-bold shrink-0 ml-2',
                                         trendType === 'positive'
                                              ? 'text-emerald-500'
                                              : trendType === 'negative'
                                              ? 'text-rose-500'
                                              : 'text-gray-500'
-                                   }`}
+                                   )}
                               >
                                    {trendType === 'positive' && <ArrowUpRight className="w-3.5 h-3.5" />}
                                    {trendType === 'negative' && <ArrowDownRight className="w-3.5 h-3.5" />}
@@ -93,16 +96,16 @@ export default function StatsCard({
                          )}
                     </div>
                )}
-          </div>
+          </Card>
      );
 
      if (href) {
           return (
                <Link href={href} className="block h-full">
-                    {CardContent}
+                    {CardInner}
                </Link>
           );
      }
 
-     return CardContent;
+     return CardInner;
 }

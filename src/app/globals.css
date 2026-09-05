@@ -1,46 +1,83 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playwrite+DK+Loopet:wght@100..400&display=swap');
 @import "tailwindcss";
-@plugin "daisyui";
 
-
-
-.playwrite{
-  font-family: "Playwrite DK Loopet", cursive;
-}
-
-
-.cormorant {
-  font-family: "Cormorant", serif;
-}
-.thin-text {
-  font-family: 'Cormorant', serif;
-  font-weight: 100;
-  /* Very thin */
-}
-
-
-/* :root {
+:root {
   --background: #ffffff;
   --foreground: #171717;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --primary: #b99d75;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #b99d75;
+  --radius: 0.25rem;
+}
+
+.dark {
+  --background: #141414;
+  --foreground: #f4f4f5;
+  --card: #1c1c1c;
+  --card-foreground: #f4f4f5;
+  --popover: #1c1c1c;
+  --popover-foreground: #f4f4f5;
+  --primary: #b99d75;
+  --primary-foreground: #ffffff;
+  --secondary: #27272a;
+  --secondary-foreground: #f4f4f5;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --accent: #27272a;
+  --accent-foreground: #f4f4f5;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fecaca;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #b99d75;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.playwrite {
+  font-family: "Playwrite DK Loopet", cursive;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+.cormorant {
+  font-family: "Cormorant", serif;
+}
+
+.thin-text {
+  font-family: 'Cormorant', serif;
+  font-weight: 100;
+}

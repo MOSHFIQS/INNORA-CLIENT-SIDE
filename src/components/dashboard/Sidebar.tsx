@@ -132,7 +132,7 @@ export default function Sidebar({ isOpen, onClose }) {
                title: 'Hotel Experience',
                items: [
                     { name: 'Explore Suites', href: '/rooms', icon: Compass },
-                    { name: 'Book a Stay', href: '/booking', icon: Key },
+                    { name: 'Book a Stay', href: '/rooms', icon: Key },
                ],
           },
           {

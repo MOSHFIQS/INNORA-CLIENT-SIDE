@@ -2,6 +2,15 @@
 
 import React from 'react';
 import { ArrowUpDown, ArrowUp, ArrowDown, AlertCircle, Inbox } from 'lucide-react';
+import {
+     Table,
+     TableHeader,
+     TableBody,
+     TableRow,
+     TableHead,
+     TableCell,
+} from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export interface Column<T = any> {
      key: string;
@@ -63,89 +72,84 @@ export default function DataTable<T = any>({
      }
 
      return (
-          <div className="overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1c1c1c] shadow-xs">
-               <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs text-gray-700 dark:text-gray-300">
-                         <thead className="bg-gray-50 dark:bg-gray-900/60 border-b border-gray-200 dark:border-gray-800 text-[11px] font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                              <tr>
-                                   {columns.map((column) => {
-                                        const isSorted = sortKey === column.key;
-                                        const SortIcon = !isSorted
-                                             ? ArrowUpDown
-                                             : sortDirection === 'asc'
-                                             ? ArrowUp
-                                             : ArrowDown;
+          <div className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#1a1a1a] shadow-xs">
+               <Table>
+                    <TableHeader>
+                         <TableRow>
+                              {columns.map((column) => {
+                                   const isSorted = sortKey === column.key;
+                                   const SortIcon = !isSorted
+                                        ? ArrowUpDown
+                                        : sortDirection === 'asc'
+                                        ? ArrowUp
+                                        : ArrowDown;
 
-                                        return (
-                                             <th
-                                                  key={column.key}
-                                                  className={`px-4 py-3.5 select-none ${column.headerClassName || ''} ${column.className || ''}`}
-                                             >
-                                                  {column.sortable ? (
-                                                       <button
-                                                            type="button"
-                                                            onClick={() => handleSort(column)}
-                                                            className="flex items-center gap-1.5 font-bold hover:text-gray-900 dark:hover:text-white transition cursor-pointer"
-                                                       >
-                                                            <span>{column.label}</span>
-                                                            <SortIcon
-                                                                 className={`w-3.5 h-3.5 ${
-                                                                      isSorted ? 'text-[#b99d75]' : 'text-gray-400 opacity-60'
-                                                                 }`}
-                                                            />
-                                                       </button>
-                                                  ) : (
+                                   return (
+                                        <TableHead
+                                             key={column.key}
+                                             className={`select-none ${column.headerClassName || ''} ${column.className || ''}`}
+                                        >
+                                             {column.sortable ? (
+                                                  <button
+                                                       type="button"
+                                                       onClick={() => handleSort(column)}
+                                                       className="flex items-center gap-1.5 font-bold hover:text-gray-900 dark:hover:text-white transition cursor-pointer"
+                                                  >
                                                        <span>{column.label}</span>
-                                                  )}
-                                             </th>
-                                        );
-                                   })}
-                              </tr>
-                         </thead>
+                                                       <SortIcon
+                                                            className={`w-3.5 h-3.5 ${
+                                                                 isSorted ? 'text-[#b99d75]' : 'text-gray-400 opacity-60'
+                                                            }`}
+                                                       />
+                                                  </button>
+                                             ) : (
+                                                  <span>{column.label}</span>
+                                             )}
+                                        </TableHead>
+                                   );
+                              })}
+                         </TableRow>
+                    </TableHeader>
 
-                         <tbody className="divide-y divide-gray-100 dark:divide-gray-800/80 font-normal">
-                              {loading ? (
-                                   Array.from({ length: skeletonRows }).map((_, rIdx) => (
-                                        <tr key={`skeleton-${rIdx}`} className="animate-pulse">
-                                             {columns.map((col, cIdx) => (
-                                                  <td key={`skeleton-${rIdx}-${cIdx}`} className="px-4 py-3.5">
-                                                       <div className="h-4 bg-gray-200 dark:bg-gray-800 rounded-sm w-3/4" />
-                                                  </td>
+                    <TableBody>
+                         {loading ? (
+                              Array.from({ length: skeletonRows }).map((_, rIdx) => (
+                                   <TableRow key={`skeleton-${rIdx}`}>
+                                        {columns.map((col, cIdx) => (
+                                             <TableCell key={`skeleton-${rIdx}-${cIdx}`}>
+                                                  <Skeleton className="h-4 w-3/4" />
+                                             </TableCell>
+                                        ))}
+                                   </TableRow>
+                              ))
+                         ) : rows.length === 0 ? (
+                              <TableRow>
+                                   <TableCell colSpan={columns.length} className="h-32 text-center text-gray-500">
+                                        <div className="flex flex-col items-center justify-center gap-2">
+                                             <Inbox className="w-8 h-8 text-gray-400 opacity-50" />
+                                             <p className="text-xs font-semibold">{emptyMessage}</p>
+                                        </div>
+                                   </TableCell>
+                              </TableRow>
+                         ) : (
+                              rows.map((item, index) => {
+                                   const rowKey = keyExtractor(item, index);
+                                   return (
+                                        <TableRow key={rowKey}>
+                                             {columns.map((column) => (
+                                                  <TableCell
+                                                       key={`${rowKey}-${column.key}`}
+                                                       className={column.className || ''}
+                                                  >
+                                                       {column.render ? column.render(item, index) : item[column.key]}
+                                                  </TableCell>
                                              ))}
-                                        </tr>
-                                   ))
-                              ) : rows.length === 0 ? (
-                                   <tr>
-                                        <td colSpan={columns.length} className="px-4 py-12 text-center text-gray-500">
-                                             <div className="flex flex-col items-center justify-center gap-2">
-                                                  <Inbox className="w-8 h-8 text-gray-400 opacity-50" />
-                                                  <p className="text-xs font-semibold">{emptyMessage}</p>
-                                             </div>
-                                        </td>
-                                   </tr>
-                              ) : (
-                                   rows.map((item, index) => {
-                                        const rowKey = keyExtractor(item, index);
-                                        return (
-                                             <tr
-                                                  key={rowKey}
-                                                  className="hover:bg-gray-50/70 dark:hover:bg-gray-800/30 transition-colors"
-                                             >
-                                                  {columns.map((column) => (
-                                                       <td
-                                                            key={`${rowKey}-${column.key}`}
-                                                            className={`px-4 py-3.5 align-middle ${column.className || ''}`}
-                                                       >
-                                                            {column.render ? column.render(item, index) : item[column.key]}
-                                                       </td>
-                                                  ))}
-                                             </tr>
-                                        );
-                                   })
-                              )}
-                         </tbody>
-                    </table>
-               </div>
+                                        </TableRow>
+                                   );
+                              })
+                         )}
+                    </TableBody>
+               </Table>
           </div>
      );
 }

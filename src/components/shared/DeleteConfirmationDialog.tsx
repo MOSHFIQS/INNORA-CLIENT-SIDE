@@ -3,6 +3,7 @@
 import React from 'react';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 import FormDialog from './FormDialog';
+import { Button } from '@/components/ui/button';
 
 export interface DeleteConfirmationDialogProps {
      isOpen: boolean;
@@ -34,23 +35,25 @@ export default function DeleteConfirmationDialog({
                     </div>
 
                     <div className="flex items-center justify-end gap-2.5 pt-2 border-t border-gray-100 dark:border-gray-800">
-                         <button
+                         <Button
                               type="button"
+                              variant="outline"
+                              size="sm"
                               onClick={onClose}
                               disabled={isLoading}
-                              className="px-4 py-2 text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition cursor-pointer"
                          >
                               Cancel
-                         </button>
-                         <button
+                         </Button>
+                         <Button
                               type="button"
+                              variant="destructive"
+                              size="sm"
                               onClick={onConfirm}
                               disabled={isLoading}
-                              className="flex items-center gap-1.5 px-4 py-2 text-xs font-bold uppercase tracking-wider bg-rose-600 hover:bg-rose-700 text-white transition disabled:opacity-50 cursor-pointer shadow-xs"
                          >
                               {isLoading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                               <span>{confirmLabel}</span>
-                         </button>
+                         </Button>
                     </div>
                </div>
           </FormDialog>

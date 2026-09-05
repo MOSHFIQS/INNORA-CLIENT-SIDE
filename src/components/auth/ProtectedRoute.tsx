@@ -3,6 +3,7 @@
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { Loader2 } from 'lucide-react';
 
 export default function ProtectedRoute({ children, allowedRoles = [] }) {
      const { user, isAuthenticated, isLoading } = useAuth();
@@ -21,7 +22,7 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
      if (isLoading) {
           return (
                <div className="flex items-center justify-center min-h-[60vh]">
-                    <span className="loading loading-spinner loading-lg text-[#b99d75]"></span>
+                    <Loader2 className="w-8 h-8 animate-spin text-[#b99d75]" />
                </div>
           );
      }

@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import PageHeader from '@/components/shared/PageHeader';
 import { useCreateInquiryMutation } from '@/redux/api/inquiryApi';
 import { useAuth } from '@/hooks/useAuth';
-import { ArrowLeft, Send, Loader2, MessageSquare, Phone, Mail, User } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Send, Loader2, MessageSquare, Phone, Mail, User, Lock } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 export default function NewInquiryPage() {
@@ -16,31 +17,54 @@ export default function NewInquiryPage() {
      const [createInquiry, { isLoading }] = useCreateInquiryMutation();
 
      const [formData, setFormData] = useState({
-          name: user?.fullName || '',
-          email: user?.email || '',
-          phone: user?.phone || '',
+          name: '',
+          email: '',
+          phone: '',
           subject: '',
           message: '',
      });
 
-     const handleChange = (e) => {
+     const isUserLoggedIn = Boolean(user?.email);
+
+     useEffect(() => {
+          if (user) {
+               const fullName =
+                    user.fullName ||
+                    `${user.firstName || ''} ${user.lastName || ''}`.trim();
+               setFormData((prev) => ({
+                    ...prev,
+                    name: prev.name || fullName,
+                    email: user.email || prev.email,
+                    phone: prev.phone || user.phone || '',
+               }));
+          }
+     }, [user]);
+
+     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
           const { name, value } = e.target;
+          // Disallow editing email when user is logged in
+          if (name === 'email' && isUserLoggedIn) return;
           setFormData((prev) => ({ ...prev, [name]: value }));
      };
 
-     const handleSubmit = async (e) => {
+     const handleSubmit = async (e: React.FormEvent) => {
           e.preventDefault();
 
-          if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+          const finalEmail = (isUserLoggedIn ? user?.email : formData.email)?.toLowerCase().trim();
+
+          if (!formData.name.trim() || !finalEmail || !formData.message.trim()) {
                toast.error('Please complete all required fields');
                return;
           }
 
           try {
-               await createInquiry(formData).unwrap();
+               await createInquiry({
+                    ...formData,
+                    email: finalEmail,
+               }).unwrap();
                toast.success('Concierge inquiry submitted successfully');
                router.push('/dashboard/inquiries');
-          } catch (err) {
+          } catch (err: any) {
                toast.error(err?.data?.message || 'Failed to submit inquiry');
           }
      };
@@ -94,21 +118,39 @@ export default function NewInquiryPage() {
                               </div>
 
                               <div className="space-y-1.5">
-                                   <label className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
-                                        Email Address *
-                                   </label>
+                                   <div className="flex items-center justify-between">
+                                        <label className="text-xs font-bold uppercase tracking-wider text-gray-700 dark:text-gray-300">
+                                             Email Address *
+                                        </label>
+                                        {isUserLoggedIn && (
+                                             <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#b99d75] uppercase tracking-wider">
+                                                  <Lock className="w-3 h-3" />
+                                                  Account Email (Fixed)
+                                             </span>
+                                        )}
+                                   </div>
                                    <div className="relative">
                                         <Mail className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                                         <input
                                              type="email"
                                              name="email"
                                              required
+                                             readOnly={isUserLoggedIn}
                                              value={formData.email}
                                              onChange={handleChange}
                                              placeholder="e.g. guest@innorahotels.com"
-                                             className="w-full pl-9 pr-3 py-2.5 text-xs border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#202020] text-gray-900 dark:text-white rounded-none focus:border-[#b99d75] focus:outline-none"
+                                             className={`w-full pl-9 pr-3 py-2.5 text-xs border rounded-none focus:outline-none transition ${
+                                                  isUserLoggedIn
+                                                       ? 'border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-[#282828] text-gray-500 dark:text-gray-400 cursor-not-allowed select-none'
+                                                       : 'border-gray-300 dark:border-gray-700 bg-white dark:bg-[#202020] text-gray-900 dark:text-white focus:border-[#b99d75]'
+                                             }`}
                                         />
                                    </div>
+                                   {isUserLoggedIn && (
+                                        <p className="text-[10px] text-gray-500 dark:text-gray-400">
+                                             This inquiry will be automatically linked to your registered customer account.
+                                        </p>
+                                   )}
                               </div>
 
                               <div className="space-y-1.5 md:col-span-2">
@@ -170,10 +212,10 @@ export default function NewInquiryPage() {
                          >
                               Cancel
                          </Link>
-                         <button
+                         <Button
                               type="submit"
                               disabled={isLoading}
-                              className="flex items-center gap-2 px-6 py-2.5 bg-[#b99d75] hover:bg-[#a68c65] text-white text-xs font-bold uppercase tracking-wider transition disabled:opacity-50 cursor-pointer shadow-sm"
+                              className="flex items-center gap-2 px-6 py-2.5 bg-[#b99d75] hover:bg-[#a68c65] text-white text-xs font-bold uppercase tracking-wider transition disabled:opacity-50 cursor-pointer shadow-xs"
                          >
                               {isLoading ? (
                                    <Loader2 className="w-4 h-4 animate-spin" />
@@ -181,7 +223,7 @@ export default function NewInquiryPage() {
                                    <Send className="w-4 h-4" />
                               )}
                               <span>Send Inquiry</span>
-                         </button>
+                         </Button>
                     </div>
                </form>
           </div>

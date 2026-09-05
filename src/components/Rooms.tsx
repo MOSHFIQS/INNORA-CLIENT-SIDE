@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Loading from '@/app/loading';
 import { useGetRoomsQuery } from '@/redux/api/roomApi';
 import { Search, SlidersHorizontal, Users, Star } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Rooms = () => {
      const [search, setSearch] = useState('');
@@ -111,23 +112,24 @@ const Rooms = () => {
                                              </div>
                                         </div>
                                    </div>
-                                   <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-800 mt-2">
-                                        <div>
-                                             <span className="text-lg font-extrabold text-[#b99d75]">
-                                                  ${room.pricePerNight}
-                                             </span>
-                                             <span className="text-[10px] text-gray-500 uppercase"> / night</span>
-                                        </div>
-                                        <button
-                                             onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  router.push(`/booking/${room.id || room._id}`);
-                                             }}
-                                             className="btn btn-sm rounded-none bg-[#b99d75] hover:bg-[#a68c65] text-white uppercase text-xs"
-                                        >
-                                             Book Now
-                                        </button>
-                                   </div>
+                                    <div className="px-5 pb-5 pt-2 flex items-center justify-between border-t border-gray-100 dark:border-gray-800 mt-2">
+                                         <div>
+                                              <span className="text-lg font-extrabold text-[#b99d75]">
+                                                   ${room.pricePerNight}
+                                              </span>
+                                              <span className="text-[10px] text-gray-500 uppercase"> / night</span>
+                                         </div>
+                                         <Button
+                                              size="sm"
+                                              className="rounded-none bg-[#b99d75] hover:bg-[#a68c65] uppercase text-xs"
+                                              onClick={(e) => {
+                                                   e.stopPropagation();
+                                                   router.push(`/booking/${room.id || room._id}`);
+                                              }}
+                                         >
+                                              Book Now
+                                         </Button>
+                                    </div>
                               </div>
                          ))}
                     </div>
