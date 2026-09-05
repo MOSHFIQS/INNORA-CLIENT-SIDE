@@ -87,7 +87,7 @@ export default function InquiryDetailPage() {
 
      if (isLoading) {
           return (
-               <div className="flex items-center justify-center min-h-[400px]">
+               <div className="flex items-center justify-center min-h-[400px] w-full">
                     <Loader2 className="w-8 h-8 animate-spin text-[#b99d75]" />
                </div>
           );

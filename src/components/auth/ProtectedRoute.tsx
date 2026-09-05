@@ -21,8 +21,10 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
 
      if (isLoading) {
           return (
-               <div className="flex items-center justify-center min-h-[60vh]">
-                    <Loader2 className="w-8 h-8 animate-spin text-[#b99d75]" />
+               <div className="min-h-screen w-full flex items-center justify-center bg-gray-100 dark:bg-[#151515]">
+                    <div className="w-16 h-16 border-4 border-transparent text-white animate-spin flex items-center justify-center border-t-white rounded-full">
+                         <div className="w-12 h-12 border-4 border-transparent text-[#b99d75] animate-spin flex items-center justify-center border-t-[#b99d75] rounded-full" />
+                    </div>
                </div>
           );
      }

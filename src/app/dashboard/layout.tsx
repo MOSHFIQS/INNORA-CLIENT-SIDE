@@ -40,7 +40,7 @@ export default function DashboardLayout({
                     {/* Main Content Area */}
                     <div className="flex-1 lg:pl-64 flex flex-col min-w-0">
                          <Header onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-                         <main className="p-4 md:p-8 flex-1">
+                         <main className="p-4 md:p-8 flex-1 flex flex-col">
                               {content}
                          </main>
                     </div>
