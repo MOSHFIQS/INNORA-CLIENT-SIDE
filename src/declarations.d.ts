@@ -1,0 +1,16 @@
+declare module '*.css';
+declare module '*.scss';
+declare module '*.sass';
+declare module '*.svg';
+declare module '*.png';
+declare module '*.jpg';
+declare module '*.jpeg';
+declare module '*.gif';
+declare module '*.webp';
+
+declare module 'swiper/css';
+declare module 'swiper/css/*';
+declare module 'swiper/react';
+declare module 'swiper/modules';
+declare module 'slick-carousel';
+declare module 'slick-carousel/*';
