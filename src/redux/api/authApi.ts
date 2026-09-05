@@ -1,5 +1,4 @@
 import { baseApi } from './baseApi';
-import { setUser, clearAuth } from '../slices/authSlice';
 
 export const authApi = baseApi.injectEndpoints({
      endpoints: (builder) => ({
@@ -9,17 +8,7 @@ export const authApi = baseApi.injectEndpoints({
                     method: 'POST',
                     body: credentials,
                }),
-               async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                    try {
-                         const { data } = await queryFulfilled;
-                         if (data?.user) {
-                              dispatch(setUser(data.user));
-                         }
-                    } catch (err) {
-                         // handled in component
-                    }
-               },
-               invalidatesTags: ['User', 'Booking', 'Dashboard', 'Notification'],
+               invalidatesTags: ['User'],
           }),
 
           register: builder.mutation({
@@ -28,51 +17,21 @@ export const authApi = baseApi.injectEndpoints({
                     method: 'POST',
                     body: userData,
                }),
-               async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                    try {
-                         const { data } = await queryFulfilled;
-                         if (data?.user) {
-                              dispatch(setUser(data.user));
-                         }
-                    } catch (err) {
-                         // handled in component
-                    }
-               },
-               invalidatesTags: ['User'],
           }),
 
-          logout: builder.mutation<any, void>({
+          logout: builder.mutation<{ message: string }, void>({
                query: () => ({
                     url: '/auth/logout',
                     method: 'POST',
                }),
-               async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                    try {
-                         await queryFulfilled;
-                         dispatch(clearAuth());
-                         dispatch(baseApi.util.resetApiState());
-                    } catch {
-                         dispatch(clearAuth());
-                    }
-               },
           }),
 
-          getMe: builder.query<any, void | Record<string, any>>({
+          getMe: builder.query<any, void>({
                query: () => '/auth/me',
                providesTags: ['User'],
-               async onQueryStarted(arg, { dispatch, queryFulfilled }) {
-                    try {
-                         const { data } = await queryFulfilled;
-                         if (data) {
-                              dispatch(setUser(data));
-                         }
-                    } catch {
-                         dispatch(clearAuth());
-                    }
-               },
           }),
 
-          getProfile: builder.query<any, void | Record<string, any>>({
+          getProfile: builder.query<any, void>({
                query: () => '/auth/me',
                providesTags: ['User'],
           }),
@@ -105,3 +64,4 @@ export const {
      useUpdateProfileMutation,
      useChangePasswordMutation,
 } = authApi;
+

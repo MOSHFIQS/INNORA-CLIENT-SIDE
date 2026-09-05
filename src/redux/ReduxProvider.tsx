@@ -2,8 +2,19 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { store } from '@/redux/store';
 
-export default function ReduxProvider({ children }) {
+export function ReduxProvider({
+     children,
+}: {
+     children: React.ReactNode;
+     preloadedUser?: any;
+}) {
      return <Provider store={store}>{children}</Provider>;
 }
+
+export default ReduxProvider;
+
+
+
+

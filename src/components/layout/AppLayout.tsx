@@ -4,15 +4,11 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import ScrollToTopButton from '@/components/ScrollToTopButton';
 import { usePathname } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 export default function AppLayout({ children }) {
      const pathname = usePathname();
-     const [mounted, setMounted] = useState(false);
 
-     useEffect(() => {
-          setMounted(true);
-     }, []);
 
      const isDashboard = pathname?.startsWith('/dashboard');
 

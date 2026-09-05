@@ -1,13 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import LogoutButton from './LogoutButton';
 import { useAuth } from '@/hooks/useAuth';
 import { BsFillMenuButtonWideFill } from 'react-icons/bs';
 import { usePathname } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
 import {
      DropdownMenu,
      DropdownMenuContent,
@@ -18,12 +17,22 @@ import {
 
 const Navbar = () => {
      const { user, isAuthenticated, isStaff, isAdmin } = useAuth();
+     const [mounted, setMounted] = useState(false);
      const pathname = usePathname();
 
-     const getLinkClass = (path) =>
+     useEffect(() => {
+          setMounted(true);
+     }, []);
+
+     const isLoggedIn = mounted && isAuthenticated;
+
+     const getLinkClass = (path: string) =>
           pathname === path
                ? 'text-[#c0a783] dark:text-[#b99d75] font-extrabold underline underline-offset-4'
                : 'hover:text-[#c0a783] dark:hover:text-[#b99d75] transition-colors duration-300';
+
+
+
 
      return (
           <header className="dark:bg-[#1a1a1a] bg-white dark:text-white text-black relative h-20 border-b border-gray-200 dark:border-gray-800 px-4 md:px-8 z-50 flex items-center justify-between">
@@ -52,14 +61,14 @@ const Navbar = () => {
                                              Rooms & Suites
                                         </Link>
                                    </DropdownMenuItem>
-                                   {isAuthenticated && (
+                                   {isLoggedIn && (
                                         <DropdownMenuItem asChild>
                                              <Link href="/myBookings" className={getLinkClass('/myBookings')}>
                                                   My Bookings
                                              </Link>
                                         </DropdownMenuItem>
                                    )}
-                                   {isAuthenticated && (
+                                   {isLoggedIn && (
                                         <DropdownMenuItem asChild>
                                              <Link href="/dashboard" className={`flex items-center justify-between ${getLinkClass('/dashboard')}`}>
                                                   <span>Dashboard</span>
@@ -82,14 +91,14 @@ const Navbar = () => {
                                         </Link>
                                    </DropdownMenuItem>
                                    <DropdownMenuSeparator />
-                                   {isAuthenticated ? (
+                                   {isLoggedIn ? (
                                         <div className="pt-2 space-y-2">
                                              <div className="text-xs text-gray-500 font-semibold truncate">
                                                   Signed in as: <span className="text-[#b99d75]">{user?.firstName || user?.email}</span>
                                              </div>
                                              <LogoutButton />
                                         </div>
-                                   ) : (
+                                   ) : mounted ? (
                                         <div className="pt-2 flex flex-col gap-2">
                                              <DropdownMenuItem asChild>
                                                   <Link href="/signin" className={getLinkClass('/signin')}>
@@ -102,6 +111,8 @@ const Navbar = () => {
                                                   </Link>
                                              </DropdownMenuItem>
                                         </div>
+                                   ) : (
+                                        <div className="pt-2 h-14" />
                                    )}
                               </DropdownMenuContent>
                          </DropdownMenu>
@@ -123,12 +134,12 @@ const Navbar = () => {
                     <Link href="/rooms" className={getLinkClass('/rooms')}>
                          Rooms & Suites
                     </Link>
-                    {isAuthenticated && (
+                    {isLoggedIn && (
                          <Link href="/myBookings" className={getLinkClass('/myBookings')}>
                               My Bookings
                          </Link>
                     )}
-                    {isAuthenticated && (
+                    {isLoggedIn && (
                          <Link href="/dashboard" className={getLinkClass('/dashboard')}>
                               Dashboard
                          </Link>
@@ -140,14 +151,14 @@ const Navbar = () => {
                          Find Us
                     </Link>
 
-                    {isAuthenticated ? (
+                    {isLoggedIn ? (
                          <div className="flex items-center gap-4 ml-2 pl-4 border-l border-gray-300 dark:border-gray-700">
                               <span className="text-xs text-[#b99d75] font-bold truncate max-w-[120px]">
                                    {user?.firstName || user?.fullName}
                               </span>
                               <LogoutButton />
                          </div>
-                    ) : (
+                    ) : mounted ? (
                          <div className="flex items-center gap-6 ml-2 pl-4 border-l border-gray-300 dark:border-gray-700">
                               <Link href="/signin" className={getLinkClass('/signin')}>
                                    SignIn
@@ -156,6 +167,8 @@ const Navbar = () => {
                                    SignUp
                               </Link>
                          </div>
+                    ) : (
+                         <div className="w-28 h-4 ml-2 pl-4 border-l border-gray-300 dark:border-gray-700" />
                     )}
                </nav>
 
