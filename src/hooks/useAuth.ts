@@ -22,10 +22,11 @@ export function useAuth() {
           setMounted(true);
      }, []);
 
-     const hasSession = mounted && typeof window !== 'undefined' && document.cookie.includes('user_session');
-     const { data: user, isLoading, error } = useGetMeQuery(undefined, { skip: !hasSession });
+     const { data: user, isLoading, error } = useGetMeQuery(undefined, { 
+          skip: !isAuthenticated && !mounted 
+     });
 
-     // Automatically clear the isLoggedIn indicator cookie if set by the backend
+     // Automatically clear any legacy isLoggedIn indicator cookie
      if (typeof window !== 'undefined' && document.cookie.includes('isLoggedIn')) {
           document.cookie = 'isLoggedIn=; Max-Age=0; path=/;';
      }
@@ -39,26 +40,18 @@ export function useAuth() {
                const userData = (user as any)?.user || (user as any)?.data?.user || (user as any)?.data || user;
                if (userData && (userData.id || userData._id || userData.email)) {
                     dispatch(setUser(userData));
-                    if (typeof window !== 'undefined') {
-                         const sessionData = {
-                              id: userData.id || userData._id,
-                              role: userData.role,
-                              firstName: userData.firstName,
-                              lastName: userData.lastName,
-                              fullName: userData.fullName || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
-                              email: userData.email,
-                              avatar: userData.avatar || userData.avatarUrl,
-                         };
-                         document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
-                    }
                }
           } else if (error) {
-               dispatch(clearAuth());
-               if (typeof window !== 'undefined') {
-                    document.cookie = 'user_session=; Max-Age=0; path=/;';
+               // Only clear auth on actual 401 / unauthorized errors
+               const status = (error as any)?.status;
+               if (status === 401 || status === 403) {
+                    dispatch(clearAuth());
+                    if (typeof window !== 'undefined') {
+                         document.cookie = 'user_session=; Max-Age=0; path=/;';
+                    }
                }
           }
-     }, [user, isLoading, error, dispatch]);
+     }, [user, isLoading, error, dispatch, reduxUser]);
 
      const [loginMutation, { isLoading: isLoggingIn }] = useLoginMutation();
      const [registerMutation, { isLoading: isRegistering }] = useRegisterMutation();
@@ -75,18 +68,6 @@ export function useAuth() {
           const userData = res?.user || res?.data?.user || res?.data || res;
           if (userData && (userData.id || userData._id || userData.email)) {
                dispatch(setUser(userData));
-               if (typeof window !== 'undefined') {
-                    const sessionData = {
-                         id: userData.id || userData._id,
-                         role: userData.role,
-                         firstName: userData.firstName,
-                         lastName: userData.lastName,
-                         fullName: userData.fullName || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
-                         email: userData.email,
-                         avatar: userData.avatar || userData.avatarUrl,
-                    };
-                    document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
-               }
           }
           return res;
      };
@@ -96,22 +77,9 @@ export function useAuth() {
           const registeredUser = res?.user || res?.data?.user || res?.data || res;
           if (registeredUser && (registeredUser.id || registeredUser._id || registeredUser.email)) {
                dispatch(setUser(registeredUser));
-               if (typeof window !== 'undefined') {
-                    const sessionData = {
-                         id: registeredUser.id || registeredUser._id,
-                         role: registeredUser.role,
-                         firstName: registeredUser.firstName,
-                         lastName: registeredUser.lastName,
-                         fullName: registeredUser.fullName || `${registeredUser.firstName || ''} ${registeredUser.lastName || ''}`.trim(),
-                         email: registeredUser.email,
-                         avatar: registeredUser.avatar || registeredUser.avatarUrl,
-                    };
-                    document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
-               }
           }
           return res;
      };
-
 
      const logout = async () => {
           dispatch(clearAuth());
