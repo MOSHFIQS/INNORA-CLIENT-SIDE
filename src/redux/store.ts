@@ -1,76 +1,64 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '@/redux/slices/authSlice';
 import { baseApi } from '@/redux/api/baseApi';
-import { cache } from 'react';
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux';
 
-const getPreloadedState = () => {
-     let userCookieValue: string | undefined;
+export const makeStore = (preloadedUser?: any) => {
+     let user = preloadedUser;
 
-     if (typeof window !== 'undefined') {
+     if (!user && typeof window !== 'undefined') {
           const match = document.cookie.match(/(^| )user_session=([^;]+)/);
           if (match) {
-               userCookieValue = match[2];
+               try {
+                    user = JSON.parse(decodeURIComponent(match[2]));
+               } catch {
+                    // ignore parsing errors
+               }
           }
      }
 
-     if (userCookieValue) {
-          try {
-               const user = JSON.parse(decodeURIComponent(userCookieValue));
-               return {
-                    auth: {
-                         user,
-                         isAuthenticated: true,
-                         isLoading: false,
-                         error: null,
-                    },
-               };
-          } catch {
-               // ignore parsing errors
-          }
-     }
-     return undefined;
-};
+     const preloadedState = user
+          ? {
+                 auth: {
+                      user,
+                      isAuthenticated: true,
+                      isLoading: false,
+                      error: null,
+                 },
+            }
+          : undefined;
 
-const createNewStore = () =>
-     configureStore({
+     return configureStore({
           reducer: {
                auth: authReducer,
                [baseApi.reducerPath]: baseApi.reducer,
           },
           middleware: (getDefaultMiddleware) =>
                getDefaultMiddleware().concat(baseApi.middleware),
-          preloadedState: getPreloadedState(),
+          preloadedState,
      });
-
-// A temporary store instance used only for type inference
-const tempStore = createNewStore();
-export type RootState = ReturnType<typeof tempStore.getState>;
-export type AppDispatch = typeof tempStore.dispatch;
-
-// Browser/client-side singleton store
-let clientStore: typeof tempStore | null = null;
-
-// Server-side per-request store using React's cache() function
-const getRequestStore = cache(() => {
-     return createNewStore();
-});
-
-const getStore = (): typeof tempStore => {
-     if (typeof window !== 'undefined') {
-          if (!clientStore) {
-               clientStore = createNewStore();
-          }
-          return clientStore;
-     }
-     return getRequestStore();
 };
 
-// Exported proxy to dynamically route store calls to the appropriate instance.
-// On the server, this resolves to a request-scoped store. On the client, a singleton.
-export const store = new Proxy({} as typeof tempStore, {
+const defaultStore = makeStore();
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<typeof defaultStore.getState>;
+export type AppDispatch = typeof defaultStore.dispatch;
+
+let clientStore: AppStore | null = null;
+
+export const getClientStore = (preloadedUser?: any): AppStore => {
+     if (typeof window === 'undefined') {
+          return makeStore(preloadedUser);
+     }
+     if (!clientStore) {
+          clientStore = makeStore(preloadedUser);
+     }
+     return clientStore;
+};
+
+export const store = new Proxy({} as AppStore, {
      get(target, prop, receiver) {
-          const activeStore = getStore();
+          const activeStore = getClientStore();
           const value = Reflect.get(activeStore, prop, receiver);
           if (typeof value === 'function') {
                return value.bind(activeStore);
@@ -81,5 +69,6 @@ export const store = new Proxy({} as typeof tempStore, {
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
 
 

@@ -36,18 +36,21 @@ export function useAuth() {
                     dispatch(setLoading(true));
                }
           } else if (user) {
-               dispatch(setUser(user));
-               if (typeof window !== 'undefined') {
-                    const sessionData = {
-                         id: user.id || user._id,
-                         role: user.role,
-                         firstName: user.firstName,
-                         lastName: user.lastName,
-                         fullName: user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-                         email: user.email,
-                         avatar: user.avatar || user.avatarUrl,
-                    };
-                    document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
+               const userData = (user as any)?.user || (user as any)?.data?.user || (user as any)?.data || user;
+               if (userData && (userData.id || userData._id || userData.email)) {
+                    dispatch(setUser(userData));
+                    if (typeof window !== 'undefined') {
+                         const sessionData = {
+                              id: userData.id || userData._id,
+                              role: userData.role,
+                              firstName: userData.firstName,
+                              lastName: userData.lastName,
+                              fullName: userData.fullName || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
+                              email: userData.email,
+                              avatar: userData.avatar || userData.avatarUrl,
+                         };
+                         document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
+                    }
                }
           } else if (error) {
                dispatch(clearAuth());
@@ -63,19 +66,24 @@ export function useAuth() {
      const [changePasswordMutation, { isLoading: isChangingPassword }] = useChangePasswordMutation();
      const [updateProfileMutation, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
 
-     const login = async (credentials: any) => {
+     const login = async (credentialsOrEmail: any, password?: string) => {
+          let credentials = credentialsOrEmail;
+          if (password !== undefined) {
+               credentials = { email: credentialsOrEmail, password };
+          }
           const res = await loginMutation(credentials).unwrap();
-          if (res && res.user) {
-               dispatch(setUser(res.user));
+          const userData = res?.user || res?.data?.user || res?.data || res;
+          if (userData && (userData.id || userData._id || userData.email)) {
+               dispatch(setUser(userData));
                if (typeof window !== 'undefined') {
                     const sessionData = {
-                         id: res.user.id || res.user._id,
-                         role: res.user.role,
-                         firstName: res.user.firstName,
-                         lastName: res.user.lastName,
-                         fullName: res.user.fullName || `${res.user.firstName || ''} ${res.user.lastName || ''}`.trim(),
-                         email: res.user.email,
-                         avatar: res.user.avatar || res.user.avatarUrl,
+                         id: userData.id || userData._id,
+                         role: userData.role,
+                         firstName: userData.firstName,
+                         lastName: userData.lastName,
+                         fullName: userData.fullName || `${userData.firstName || ''} ${userData.lastName || ''}`.trim(),
+                         email: userData.email,
+                         avatar: userData.avatar || userData.avatarUrl,
                     };
                     document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
                }
@@ -85,23 +93,25 @@ export function useAuth() {
 
      const register = async (userData: any) => {
           const res = await registerMutation(userData).unwrap();
-          if (res && res.user) {
-               dispatch(setUser(res.user));
+          const registeredUser = res?.user || res?.data?.user || res?.data || res;
+          if (registeredUser && (registeredUser.id || registeredUser._id || registeredUser.email)) {
+               dispatch(setUser(registeredUser));
                if (typeof window !== 'undefined') {
                     const sessionData = {
-                         id: res.user.id || res.user._id,
-                         role: res.user.role,
-                         firstName: res.user.firstName,
-                         lastName: res.user.lastName,
-                         fullName: res.user.fullName || `${res.user.firstName || ''} ${res.user.lastName || ''}`.trim(),
-                         email: res.user.email,
-                         avatar: res.user.avatar || res.user.avatarUrl,
+                         id: registeredUser.id || registeredUser._id,
+                         role: registeredUser.role,
+                         firstName: registeredUser.firstName,
+                         lastName: registeredUser.lastName,
+                         fullName: registeredUser.fullName || `${registeredUser.firstName || ''} ${registeredUser.lastName || ''}`.trim(),
+                         email: registeredUser.email,
+                         avatar: registeredUser.avatar || registeredUser.avatarUrl,
                     };
                     document.cookie = `user_session=${encodeURIComponent(JSON.stringify(sessionData))}; path=/; max-age=604800;`;
                }
           }
           return res;
      };
+
 
      const logout = async () => {
           dispatch(clearAuth());
