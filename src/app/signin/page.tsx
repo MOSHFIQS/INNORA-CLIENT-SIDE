@@ -83,13 +83,6 @@ const Page = () => {
                                    Sign Up
                               </Link>
                          </div>
-
-                         <div className="mt-4 p-3 bg-gray-100 dark:bg-[#2a2a2a] text-xs text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded">
-                              <p className="font-bold text-[#b99d75] mb-1">Demo Accounts:</p>
-                              <p>👑 <b>SuperAdmin:</b> superadmin@innora.com / Admin@123456</p>
-                              <p>🏨 <b>Staff:</b> staff@innora.com / Staff@123456</p>
-                              <p>✨ <b>Customer:</b> customer@innora.com / Customer@123456</p>
-                         </div>
                     </form>
                </div>
           </div>
